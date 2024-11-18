@@ -19,15 +19,15 @@ app.post('/api/avaliacoes', (req, res) => {
         return res.status(400).json({ error: 'Produto e avaliação são obrigatórios!' });
     }
 
-    // Aqui você pode salvar as avaliações no banco de dados ou em um arquivo
-    // Simulando uma resposta de sucesso
-    console.log(`Avaliação para produto ${produtoId} recebida com nota ${rating}`);
+    if (typeof produtoId !== 'number' || typeof rating !== 'number' || rating < 1 || rating > 5) {
+        return res.status(400).json({ error: 'Avaliação deve ser um número entre 1 e 5.' });
+    }
 
-    // Retornando sucesso (simulação de sucesso)
-    return res.status(200).json({ message: 'Avaliação enviada com sucesso!' });
+    // Lógica de salvar avaliação no banco de dados
+    res.status(200).json({ message: 'Avaliação enviada com sucesso!' });
 });
 
-// Rota para realizar a compra de um produto
+// Rota para compras
 app.post('/api/compras', (req, res) => {
     const { produtoId } = req.body;
 
@@ -35,13 +35,10 @@ app.post('/api/compras', (req, res) => {
         return res.status(400).json({ error: 'Produto é obrigatório!' });
     }
 
-    // Aqui você pode adicionar a lógica de compra (ex: estoque, pagamento)
-    // Simulando uma resposta de sucesso
-    console.log(`Compra realizada para o produto ${produtoId}`);
+    if (typeof produtoId !== 'number') {
+        return res.status(400).json({ error: 'Produto deve ser um número válido!' });
+    }
 
-    // Retornando sucesso (simulação de sucesso)
-    return res.status(200).json({ message: 'Compra realizada com sucesso!' });
+    // Lógica de processamento da compra
+    res.status(200).json({ message: 'Compra realizada com sucesso!' });
 });
-
-// Exporte o app para uso no Vercel
-module.exports = app;
