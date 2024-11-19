@@ -21,7 +21,8 @@ const client = new MongoClient(uri);
 // Função para conectar ao banco
 async function connectToDatabase() {
     try {
-        if (!client.isConnected) {
+        // Garantir que a conexão será feita
+        if (!client.isConnected()) {
             await client.connect();
             console.log('Conectado ao MongoDB!');
         }
@@ -32,18 +33,6 @@ async function connectToDatabase() {
     }
 }
 
-// Fechar a conexão ao finalizar o processo
-process.on('SIGINT', async () => {
-    try {
-        await client.close();
-        console.log('Conexão com o MongoDB encerrada.');
-        process.exit(0);
-    } catch (error) {
-        console.error('Erro ao encerrar a conexão:', error);
-        process.exit(1);
-    }
-});
-
 // Middleware para autenticação com Bearer Token
 function autenticarJWT(req, res, next) {
     const token = req.headers['authorization']?.split(' ')[1]; // Obtendo o token após 'Bearer'
@@ -52,7 +41,7 @@ function autenticarJWT(req, res, next) {
         return res.status(401).json({ error: 'Token não fornecido.' });
     }
 
-    jwt.verify(token, 'kyHDa6uhj5OG3PeneWDiDGpo', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => { // Usando variável de ambiente para a chave secreta
         if (err) {
             return res.status(403).json({ error: 'Token inválido.' });
         }
