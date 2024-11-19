@@ -14,6 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Enviar avaliação para a API
                 try {
                     const token = localStorage.getItem("jwt_token"); // Supondo que o token esteja armazenado no localStorage
+                    console.log("Token:", token); // Verifique se o token está presente
+                    console.log("Produto ID:", produtoId);
+                    console.log("Avaliação:", rating);
 
                     const resposta = await fetch("https://api-igljz2gr6-pedrof77s-projects.vercel.app/api/avaliacoes", {
                         method: "POST",
@@ -24,7 +27,11 @@ document.addEventListener("DOMContentLoaded", () => {
                         body: JSON.stringify({ produtoId, rating }),
                     });
 
-                    if (!resposta.ok) throw new Error("Erro ao enviar avaliação.");
+                    if (!resposta.ok) {
+                        const errorData = await resposta.json();
+                        throw new Error(errorData.error || "Erro ao enviar avaliação.");
+                    }
+
                     alert("Avaliação enviada com sucesso!");
                 } catch (erro) {
                     alert("Erro ao enviar avaliação: " + erro.message);
