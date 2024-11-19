@@ -13,9 +13,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // Enviar avaliação para a API
                 try {
+                    const token = localStorage.getItem("jwt_token"); // Supondo que o token esteja armazenado no localStorage
+
                     const resposta = await fetch("https://api-igljz2gr6-pedrof77s-projects.vercel.app/api/avaliacoes", {
                         method: "POST",
-                        headers: { "Content-Type": "application/json" },
+                        headers: { 
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}` // Passando o token no cabeçalho
+                        },
                         body: JSON.stringify({ produtoId, rating }),
                     });
 
@@ -34,9 +39,14 @@ document.addEventListener("DOMContentLoaded", () => {
             const produtoId = button.getAttribute("data-id");
 
             try {
+                const token = localStorage.getItem("jwt_token"); // Supondo que o token esteja armazenado no localStorage
+
                 const resposta = await fetch("https://api-igljz2gr6-pedrof77s-projects.vercel.app/api/compras", {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: { 
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}` // Passando o token no cabeçalho
+                    },
                     body: JSON.stringify({ produtoId }),
                 });
 
