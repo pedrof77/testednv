@@ -1,4 +1,8 @@
-require('dotenv').config();
+// Carregar variáveis de ambiente no modo de desenvolvimento
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
+
 const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
@@ -16,12 +20,29 @@ const client = new MongoClient(uri);
 
 // Função para conectar ao banco
 async function connectToDatabase() {
-    if (!client.isConnected) {
-        await client.connect();
-        console.log('Conectado ao MongoDB!');
+    try {
+        if (!client.isConnected) {
+            await client.connect();
+            console.log('Conectado ao MongoDB!');
+        }
+        return client.db(); // Retorna o banco de dados padrão configurado na URI
+    } catch (error) {
+        console.error('Erro ao conectar ao MongoDB:', error);
+        throw new Error('Erro ao conectar ao banco de dados.');
     }
-    return client.db(); // Retorna o banco de dados padrão configurado na URI
 }
+
+// Fechar a conexão ao finalizar o processo
+process.on('SIGINT', async () => {
+    try {
+        await client.close();
+        console.log('Conexão com o MongoDB encerrada.');
+        process.exit(0);
+    } catch (error) {
+        console.error('Erro ao encerrar a conexão:', error);
+        process.exit(1);
+    }
+});
 
 // Middleware para autenticação com Bearer Token
 function autenticarJWT(req, res, next) {
