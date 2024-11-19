@@ -1,60 +1,62 @@
-// Carregar variáveis de ambiente no modo de desenvolvimento
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
 
 const express = require('express');
 const cors = require('cors');
-const jwt = require('jsonwebtoken');
-const { MongoClient } = require('mongodb'); // Importando o driver MongoDB
+const { MongoClient } = require('mongodb'); 
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// String de conexão do MongoDB
-const uri = process.env.MONGODB_URI; // Certifique-se de configurar esta variável no ambiente (Vercel ou local)
 
-// Criando um cliente MongoDB
+const uri = process.env.MONGODB_URI;  
+
 const client = new MongoClient(uri);
 
-// Função para conectar ao banco
+
 async function connectToDatabase() {
     try {
-        // Conectar ao MongoDB diretamente sem verificar se já está conectado
         await client.connect();
         console.log('Conectado ao MongoDB!');
-        return client.db(); // Retorna o banco de dados padrão configurado na URI
+        return client.db(); 
     } catch (error) {
         console.error('Erro ao conectar ao MongoDB:', error);
         throw new Error('Erro ao conectar ao banco de dados.');
     }
 }
 
-// Middleware para autenticação com Bearer Token
-function autenticarJWT(req, res, next) {
-    const token = req.headers['authorization']?.split(' ')[1]; // Obtendo o token após 'Bearer'
+
+const validTokens = [
+    "kyHDa6uhj5OG3PeneWDiDGpo",  // Token 1 Vercel
+    "ghI93k8jYJQmuLfLoKnJvFyq"   // Token 2 Vercel
+];
+
+
+function autenticarToken(req, res, next) {
+    const token = req.headers['authorization']?.split(' ')[1];
 
     if (!token) {
         return res.status(401).json({ error: 'Token não fornecido.' });
     }
 
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => { // Usando variável de ambiente para a chave secreta
-        if (err) {
-            return res.status(403).json({ error: 'Token inválido.' });
-        }
-        req.user = decoded; // Decodificando o token e anexando o payload na requisição
-        next(); // Prossegue com a requisição
-    });
+    
+    if (!validTokens.includes(token)) {
+        return res.status(403).json({ error: 'Token inválido.' });
+    }
+
+    
+    next(); 
 }
 
-// Rota inicial
+
 app.get('/api/hello', (req, res) => {
     res.status(200).json({ message: 'Olá, mundo!' });
 });
 
-// Rota para enviar avaliação de produto (com autenticação)
-app.post('/api/avaliacoes', autenticarJWT, async (req, res) => {
+
+app.post('/api/avaliacoes', autenticarToken, async (req, res) => {
     const { produtoId, rating } = req.body;
 
     if (!produtoId || !rating) {
@@ -67,19 +69,11 @@ app.post('/api/avaliacoes', autenticarJWT, async (req, res) => {
 
     try {
         const db = await connectToDatabase();
-        
-        // Verifica se já existe avaliação para o produto
-        const avaliacaoExistente = await db.collection('avaliacoes').findOne({ produtoId, userId: req.user.id });
-
-        // Caso não exista, insere a avaliação enviada
-        if (avaliacaoExistente) {
-            return res.status(400).json({ error: 'Você já avaliou este produto.' });
-        }
 
         const resultado = await db.collection('avaliacoes').insertOne({
             produtoId,
             rating,
-            userId: req.user.id, // Usando o ID do usuário do token JWT
+            userId: 'usuario_id_aqui',  
             date: new Date(),
         });
 
@@ -90,8 +84,8 @@ app.post('/api/avaliacoes', autenticarJWT, async (req, res) => {
     }
 });
 
-// Rota para compras (com autenticação)
-app.post('/api/compras', autenticarJWT, async (req, res) => {
+
+app.post('/api/compras', autenticarToken, async (req, res) => {
     const { produtoId } = req.body;
 
     if (!produtoId) {
@@ -105,25 +99,17 @@ app.post('/api/compras', autenticarJWT, async (req, res) => {
     try {
         const db = await connectToDatabase();
 
-        // Verifica se o produto já foi comprado
-        let compraExistente = await db.collection('compras').findOne({ produtoId, userId: req.user.id });
+        const resultado = await db.collection('compras').insertOne({
+            produtoId,
+            userId: 'usuario_id_aqui',  
+            date: new Date(),
+        });
 
-        // Caso não exista, insere a compra
-        if (!compraExistente) {
-            const resultado = await db.collection('compras').insertOne({
-                produtoId,
-                userId: req.user.id, // ID do usuário no JWT
-                date: new Date(),
-            });
-            compraExistente = resultado.ops[0]; // Atualiza a variável com a compra inserida
-        }
-
-        res.status(200).json({ message: 'Compra realizada com sucesso!', id: compraExistente.insertedId });
+        res.status(200).json({ message: 'Compra realizada com sucesso!', id: resultado.insertedId });
     } catch (error) {
         console.error('Erro ao processar compra:', error);
         res.status(500).json({ error: 'Erro ao processar compra.' });
     }
 });
 
-// Exporte o app para uso no Vercel
 module.exports = app;
