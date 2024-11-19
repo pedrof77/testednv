@@ -21,11 +21,9 @@ const client = new MongoClient(uri);
 // Função para conectar ao banco
 async function connectToDatabase() {
     try {
-        // Garantir que a conexão será feita
-        if (!client.isConnected()) {
-            await client.connect();
-            console.log('Conectado ao MongoDB!');
-        }
+        // Conectar ao MongoDB diretamente sem verificar se já está conectado
+        await client.connect();
+        console.log('Conectado ao MongoDB!');
         return client.db(); // Retorna o banco de dados padrão configurado na URI
     } catch (error) {
         console.error('Erro ao conectar ao MongoDB:', error);
@@ -71,29 +69,21 @@ app.post('/api/avaliacoes', autenticarJWT, async (req, res) => {
         const db = await connectToDatabase();
         
         // Verifica se já existe avaliação para o produto
-        let avaliacaoExistente = await db.collection('avaliacoes').findOne({ produtoId });
+        const avaliacaoExistente = await db.collection('avaliacoes').findOne({ produtoId, userId: req.user.id });
 
-        // Caso não exista, insere uma avaliação padrão
-        if (!avaliacaoExistente) {
-            console.log('Nenhuma avaliação encontrada para este produto, inserindo dados padrão.');
-            const resultado = await db.collection('avaliacoes').insertOne({
-                produtoId,
-                rating: 3, // Avaliação padrão
-                userId: 'sistema', // ID fictício para a avaliação padrão
-                date: new Date(),
-            });
-            avaliacaoExistente = resultado.ops[0]; // Atualiza a variável com a avaliação inserida
+        // Caso não exista, insere a avaliação enviada
+        if (avaliacaoExistente) {
+            return res.status(400).json({ error: 'Você já avaliou este produto.' });
         }
 
-        // Inserir a avaliação enviada
-        const result = await db.collection('avaliacoes').insertOne({
+        const resultado = await db.collection('avaliacoes').insertOne({
             produtoId,
             rating,
             userId: req.user.id, // Usando o ID do usuário do token JWT
             date: new Date(),
         });
 
-        res.status(200).json({ message: 'Avaliação enviada com sucesso!', id: result.insertedId, avaliacaoExistente });
+        res.status(200).json({ message: 'Avaliação enviada com sucesso!', id: resultado.insertedId });
     } catch (error) {
         console.error('Erro ao salvar avaliação:', error);
         res.status(500).json({ error: 'Erro ao salvar avaliação.' });
@@ -115,12 +105,11 @@ app.post('/api/compras', autenticarJWT, async (req, res) => {
     try {
         const db = await connectToDatabase();
 
-        // Verifica se o produto já foi comprado (opcional)
+        // Verifica se o produto já foi comprado
         let compraExistente = await db.collection('compras').findOne({ produtoId, userId: req.user.id });
 
-        // Caso não exista, insere uma compra fictícia
+        // Caso não exista, insere a compra
         if (!compraExistente) {
-            console.log('Nenhuma compra registrada, inserindo dados padrão.');
             const resultado = await db.collection('compras').insertOne({
                 produtoId,
                 userId: req.user.id, // ID do usuário no JWT
@@ -129,14 +118,7 @@ app.post('/api/compras', autenticarJWT, async (req, res) => {
             compraExistente = resultado.ops[0]; // Atualiza a variável com a compra inserida
         }
 
-        // Inserir a compra
-        const result = await db.collection('compras').insertOne({
-            produtoId,
-            userId: req.user.id, // Usando o ID do usuário do token JWT
-            date: new Date(),
-        });
-
-        res.status(200).json({ message: 'Compra realizada com sucesso!', id: result.insertedId, compraExistente });
+        res.status(200).json({ message: 'Compra realizada com sucesso!', id: compraExistente.insertedId });
     } catch (error) {
         console.error('Erro ao processar compra:', error);
         res.status(500).json({ error: 'Erro ao processar compra.' });
