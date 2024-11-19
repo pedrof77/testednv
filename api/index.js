@@ -69,6 +69,23 @@ app.post('/api/avaliacoes', autenticarJWT, async (req, res) => {
 
     try {
         const db = await connectToDatabase();
+        
+        // Verifica se já existe avaliação para o produto
+        let avaliacaoExistente = await db.collection('avaliacoes').findOne({ produtoId });
+
+        // Caso não exista, insere uma avaliação padrão
+        if (!avaliacaoExistente) {
+            console.log('Nenhuma avaliação encontrada para este produto, inserindo dados padrão.');
+            const resultado = await db.collection('avaliacoes').insertOne({
+                produtoId,
+                rating: 3, // Avaliação padrão
+                userId: 'sistema', // ID fictício para a avaliação padrão
+                date: new Date(),
+            });
+            avaliacaoExistente = resultado.ops[0]; // Atualiza a variável com a avaliação inserida
+        }
+
+        // Inserir a avaliação enviada
         const result = await db.collection('avaliacoes').insertOne({
             produtoId,
             rating,
@@ -76,7 +93,7 @@ app.post('/api/avaliacoes', autenticarJWT, async (req, res) => {
             date: new Date(),
         });
 
-        res.status(200).json({ message: 'Avaliação enviada com sucesso!', id: result.insertedId });
+        res.status(200).json({ message: 'Avaliação enviada com sucesso!', id: result.insertedId, avaliacaoExistente });
     } catch (error) {
         console.error('Erro ao salvar avaliação:', error);
         res.status(500).json({ error: 'Erro ao salvar avaliação.' });
@@ -97,13 +114,29 @@ app.post('/api/compras', autenticarJWT, async (req, res) => {
 
     try {
         const db = await connectToDatabase();
+
+        // Verifica se o produto já foi comprado (opcional)
+        let compraExistente = await db.collection('compras').findOne({ produtoId, userId: req.user.id });
+
+        // Caso não exista, insere uma compra fictícia
+        if (!compraExistente) {
+            console.log('Nenhuma compra registrada, inserindo dados padrão.');
+            const resultado = await db.collection('compras').insertOne({
+                produtoId,
+                userId: req.user.id, // ID do usuário no JWT
+                date: new Date(),
+            });
+            compraExistente = resultado.ops[0]; // Atualiza a variável com a compra inserida
+        }
+
+        // Inserir a compra
         const result = await db.collection('compras').insertOne({
             produtoId,
             userId: req.user.id, // Usando o ID do usuário do token JWT
             date: new Date(),
         });
 
-        res.status(200).json({ message: 'Compra realizada com sucesso!', id: result.insertedId });
+        res.status(200).json({ message: 'Compra realizada com sucesso!', id: result.insertedId, compraExistente });
     } catch (error) {
         console.error('Erro ao processar compra:', error);
         res.status(500).json({ error: 'Erro ao processar compra.' });
