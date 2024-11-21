@@ -1,5 +1,5 @@
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config(); 
+if (process.env.NODE_ENV !== 'production') { 
+    require('dotenv').config(); // Carregar variáveis de ambiente do arquivo .env (para desenvolvimento)
 }
 
 const express = require('express');
@@ -8,15 +8,17 @@ const { MongoClient, ObjectId } = require('mongodb');
 const jwt = require('jsonwebtoken'); 
 const app = express();
 
-
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 
-
+// Obter a URL do MongoDB e token válido de variáveis de ambiente
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri);
 
+// Variáveis de ambiente para os tokens
+const validTokens = process.env.VALID_TOKENS ? process.env.VALID_TOKENS.split(',') : [];
 
+// Conexão com o banco de dados MongoDB
 let dbInstance = null;
 async function getDatabase() {
     if (!dbInstance) {
@@ -32,23 +34,18 @@ async function getDatabase() {
     return dbInstance;
 }
 
-
-const validTokens = [
-    "kyHDa6uhj5OG3PeneWDiDGpo",
-    "ghI93k8jYJQmuLfLoKnJvFyq"
-];
-
-
+// Função de autenticação com token
 function autenticarToken(req, res, next) {
-    const token = req.headers['authorization']?.split(' ')[1];
+    const token = req.headers['authorization']?.split(' ')[1]; // Pega o token do cabeçalho de autorização
     if (!token) return res.status(401).json({ error: 'Token não fornecido.' });
 
     if (!validTokens.includes(token)) return res.status(403).json({ error: 'Token inválido.' });
 
-    req.user = { id: 'usuario_id_aqui' }; 
+    req.user = { id: 'usuario_id_aqui' }; // Aqui pode ser o ID real do usuário (caso use JWT)
     next();
 }
 
+// Rota POST para criar uma avaliação
 app.post('/api/avaliacoes', autenticarToken, async (req, res) => {
     const { produtoId, rating } = req.body;
 
@@ -72,6 +69,7 @@ app.post('/api/avaliacoes', autenticarToken, async (req, res) => {
     }
 });
 
+// Rota GET para listar todas as avaliações
 app.get('/api/avaliacoes', autenticarToken, async (req, res) => {
     try {
         const db = await getDatabase();
@@ -83,6 +81,7 @@ app.get('/api/avaliacoes', autenticarToken, async (req, res) => {
     }
 });
 
+// Rota PUT para atualizar uma avaliação
 app.put('/api/avaliacoes/:id', autenticarToken, async (req, res) => {
     const { id } = req.params;
     const { rating } = req.body;
@@ -109,7 +108,7 @@ app.put('/api/avaliacoes/:id', autenticarToken, async (req, res) => {
     }
 });
 
-
+// Rota DELETE para excluir uma avaliação
 app.delete('/api/avaliacoes/:id', autenticarToken, async (req, res) => {
     const { id } = req.params;
 
@@ -128,6 +127,7 @@ app.delete('/api/avaliacoes/:id', autenticarToken, async (req, res) => {
     }
 });
 
+// Configuração da porta do servidor
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port}`);
