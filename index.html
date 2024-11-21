@@ -10,100 +10,127 @@
 
 <body>
     <header>
-        <h1>Confeitaria Delícia</h1>
-        <nav aria-label="Menu de navegação">
-            <ul>
-                <li><a href="#home">Início</a></li>
-                <li><a href="#produtos">Produtos</a></li>
-                <li><a href="#contato">Contato</a></li>
-            </ul>
-        </nav>
+        <div class="container-header">
+            <h1>Confeitaria Delícia</h1>
+            <nav aria-label="Menu de navegação">
+                <ul class="menu">
+                    <li><a href="#home">Início</a></li>
+                    <li><a href="#produtos">Produtos</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
     <main>
         <section id="home">
-            <h2>Bem-vindo à Confeitaria Delícia!</h2>
-            <p>Os melhores doces e bolos da cidade.</p>
+            <div class="container-section">
+                <h2>Bem-vindo à Confeitaria Delícia!</h2>
+                <p>Os melhores doces e bolos da cidade.</p>
+            </div>
         </section>
 
         <section id="produtos">
-            <h2>Nossos Produtos</h2>
-            <div class="galeria-produtos">
-                <!-- Bolo de Chocolate -->
-                <div class="produto" aria-labelledby="produto1">
-                    <img src="images.jpeg" alt="Bolo de Chocolate com recheio de brigadeiro">
-                    <h3 id="produto1">Bolo de Chocolate</h3>
-                    <p>Delicioso bolo de chocolate com recheio de brigadeiro.</p>
-                    <p>Preço: R$25,00</p>
-                    <div class="avaliacao" data-id="3" aria-labelledby="avaliacao1">
-                        <span class="estrela" data-value="1" aria-label="1 estrela">★</span>
-                        <span class="estrela" data-value="2" aria-label="2 estrelas">★</span>
-                        <span class="estrela" data-value="3" aria-label="3 estrelas">★</span>
-                        <span class="estrela" data-value="4" aria-label="4 estrelas">★</span>
-                        <span class="estrela" data-value="5" aria-label="5 estrelas">★</span>
+            <div class="container-section">
+                <h2>Nossos Produtos</h2>
+                <div class="galeria-produtos">
+                    <!-- Produto Template -->
+                    <div class="produto" aria-labelledby="produto1">
+                        <img src="images.jpeg" alt="Bolo de Chocolate com recheio de brigadeiro">
+                        <h3 id="produto1">Bolo de Chocolate</h3>
+                        <p>Delicioso bolo de chocolate com recheio de brigadeiro.</p>
+                        <p>Preço: R$25,00</p>
+                        <div class="avaliacao" data-id="1" aria-labelledby="avaliacao1">
+                            <span class="estrela" data-value="1" aria-label="1 estrela">★</span>
+                            <span class="estrela" data-value="2" aria-label="2 estrelas">★</span>
+                            <span class="estrela" data-value="3" aria-label="3 estrelas">★</span>
+                            <span class="estrela" data-value="4" aria-label="4 estrelas">★</span>
+                            <span class="estrela" data-value="5" aria-label="5 estrelas">★</span>
+                        </div>
+                        <button class="comprar" data-id="1" aria-label="Comprar Bolo de Chocolate">Comprar</button>
                     </div>
-                    <button class="comprar" data-id="123" aria-label="Comprar Bolo de Chocolate">Comprar</button>
-                </div>
-
-                <!-- Bolo de Morango -->
-                <div class="produto" aria-labelledby="produto2">
-                    <img src="images (1).jpeg" alt="Bolo de Morango com cobertura de chantilly">
-                    <h3 id="produto2">Bolo de Morango</h3>
-                    <p>Fresco bolo de morango com cobertura de chantilly.</p>
-                    <p>Preço: R$25,00</p>
-                    <div class="avaliacao" data-id="2" aria-labelledby="avaliacao2">
-                        <span class="estrela" data-value="1" aria-label="1 estrela">★</span>
-                        <span class="estrela" data-value="2" aria-label="2 estrelas">★</span>
-                        <span class="estrela" data-value="3" aria-label="3 estrelas">★</span>
-                        <span class="estrela" data-value="4" aria-label="4 estrelas">★</span>
-                        <span class="estrela" data-value="5" aria-label="5 estrelas">★</span>
+                    <!-- Mais produtos aqui -->
+                    <div class="produto" aria-labelledby="produto1">
+                        <img src="images.jpeg" alt="Bolo de Chocolate com recheio de brigadeiro">
+                        <h3 id="produto1">Bolo de Chocolate</h3>
+                        <p>Delicioso bolo de chocolate com recheio de brigadeiro.</p>
+                        <p>Preço: R$25,00</p>
+                        <div class="avaliacao" data-id="1" aria-labelledby="avaliacao1">
+                            <span class="estrela" data-value="1" aria-label="1 estrela">★</span>
+                            <span class="estrela" data-value="2" aria-label="2 estrelas">★</span>
+                            <span class="estrela" data-value="3" aria-label="3 estrelas">★</span>
+                            <span class="estrela" data-value="4" aria-label="4 estrelas">★</span>
+                            <span class="estrela" data-value="5" aria-label="5 estrelas">★</span>
+                        </div>
+                        <button class="comprar" data-id="1" aria-label="Comprar Bolo de Chocolate">Comprar</button>
                     </div>
-                    <button class="comprar" data-id="123" aria-label="Comprar Bolo de Morango">Comprar</button>
-                </div>
-
-                <!-- Torta de Maçã -->
-                <div class="produto" aria-labelledby="produto3">
-                    <img src="images (1).jpeg" alt="Torta de Maçã">
-                    <h3 id="produto3">Torta de Maçã</h3>
-                    <p>Deliciosa torta de maçã com massa crocante e recheio cremoso.</p>
-                    <p>Preço: R$30,00</p>
-                    <div class="avaliacao" data-id="1" aria-labelledby="avaliacao3">
-                        <span class="estrela" data-value="1" aria-label="1 estrela">★</span>
-                        <span class="estrela" data-value="2" aria-label="2 estrelas">★</span>
-                        <span class="estrela" data-value="3" aria-label="3 estrelas">★</span>
-                        <span class="estrela" data-value="4" aria-label="4 estrelas">★</span>
-                        <span class="estrela" data-value="5" aria-label="5 estrelas">★</span>
+                    <div class="produto" aria-labelledby="produto1">
+                        <img src="images.jpeg" alt="Bolo de Chocolate com recheio de brigadeiro">
+                        <h3 id="produto1">Bolo de Chocolate</h3>
+                        <p>Delicioso bolo de chocolate com recheio de brigadeiro.</p>
+                        <p>Preço: R$25,00</p>
+                        <div class="avaliacao" data-id="1" aria-labelledby="avaliacao1">
+                            <span class="estrela" data-value="1" aria-label="1 estrela">★</span>
+                            <span class="estrela" data-value="2" aria-label="2 estrelas">★</span>
+                            <span class="estrela" data-value="3" aria-label="3 estrelas">★</span>
+                            <span class="estrela" data-value="4" aria-label="4 estrelas">★</span>
+                            <span class="estrela" data-value="5" aria-label="5 estrelas">★</span>
+                        </div>
+                        <button class="comprar" data-id="1" aria-label="Comprar Bolo de Chocolate">Comprar</button>
                     </div>
-                    <button class="comprar" data-id="123" aria-label="Comprar Torta de Maçã">Comprar</button>
-                </div>
-
-                <!-- Bolo de Limão -->
-                <div class="produto" aria-labelledby="produto4">
-                    <img src="images (1).jpeg" alt="Bolo de Limão com cobertura de chantilly">
-                    <h3 id="produto4">Bolo de Limão</h3>
-                    <p>Fresco bolo de limão com cobertura de chantilly.</p>
-                    <p>Preço: R$25,00</p>
-                    <div class="avaliacao" data-id="2" aria-labelledby="avaliacao4">
-                        <span class="estrela" data-value="1" aria-label="1 estrela">★</span>
-                        <span class="estrela" data-value="2" aria-label="2 estrelas">★</span>
-                        <span class="estrela" data-value="3" aria-label="3 estrelas">★</span>
-                        <span class="estrela" data-value="4" aria-label="4 estrelas">★</span>
-                        <span class="estrela" data-value="5" aria-label="5 estrelas">★</span>
+                    <div class="produto" aria-labelledby="produto1">
+                        <img src="images (1).jpeg" alt="Bolo de Chocolate com recheio de brigadeiro">
+                        <h3 id="produto1">Bolo de pipoca</h3>
+                        <p>Delicioso bolo de chocolate com recheio de botafogo.</p>
+                        <p>Preço: R$25,00</p>
+                        <div class="avaliacao" data-id="1" aria-labelledby="avaliacao1">
+                            <span class="estrela" data-value="1" aria-label="1 estrela">★</span>
+                            <span class="estrela" data-value="2" aria-label="2 estrelas">★</span>
+                            <span class="estrela" data-value="3" aria-label="3 estrelas">★</span>
+                            <span class="estrela" data-value="4" aria-label="4 estrelas">★</span>
+                            <span class="estrela" data-value="5" aria-label="5 estrelas">★</span>
+                        </div>
+                        <button class="comprar" data-id="1" aria-label="Comprar Bolo de Chocolate">Comprar</button>
                     </div>
-                    <button class="comprar" data-id="123" aria-label="Comprar Bolo de Limão">Comprar</button>
+                    <div class="produto" aria-labelledby="produto1">
+                        <img src="images (1).jpeg" alt="Bolo de Chocolate com recheio de brigadeiro">
+                        <h3 id="produto1">Bolo de botafogo</h3>
+                        <p>Delicioso bolo de chocolate com recheio de pipoca.</p>
+                        <p>Preço: R$25,00</p>
+                        <div class="avaliacao" data-id="1" aria-labelledby="avaliacao1">
+                            <span class="estrela" data-value="1" aria-label="1 estrela">★</span>
+                            <span class="estrela" data-value="2" aria-label="2 estrelas">★</span>
+                            <span class="estrela" data-value="3" aria-label="3 estrelas">★</span>
+                            <span class="estrela" data-value="4" aria-label="4 estrelas">★</span>
+                            <span class="estrela" data-value="5" aria-label="5 estrelas">★</span>
+                        </div>
+                        <button class="comprar" data-id="1" aria-label="Comprar Bolo de Chocolate">Comprar</button>
+                    </div>
                 </div>
             </div>
         </section>
 
         <section id="contato">
-            <h2>Contato</h2>
-            <p>Email: <a href="mailto:contato@confeitariadelicia.com" aria-label="Enviar email para contato">contato@confeitariadelicia.com</a></p>
-            <p>Telefone: <a href="tel:+551112345678" aria-label="Ligar para o telefone (11) 1234-5678">(11) 1234-5678</a></p>
+            <div class="container-section">
+                <h2>Contato</h2>
+                <p>Email: <a href="mailto:contato@confeitariadelicia.com" aria-label="Enviar email">contato@confeitariadelicia.com</a></p>
+                <p>Telefone: <a href="tel:+551112345678" aria-label="Ligar para (11) 1234-5678">(11) 1234-5678</a></p>
+            </div>
+        </section>
+
+        <section id="avaliacoes">
+            <div class="container-section">
+                <h2>Gerenciar Avaliações</h2>
+                <button id="listar-avaliacoes" aria-label="Listar todas as avaliações">Listar Avaliações</button>
+                <button id="excluir-avaliacao" aria-label="Excluir uma avaliação">Excluir Avaliação</button>
+            </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2024 Confeitaria Delícia. Todos os direitos reservados.</p>
+        <div class="container-footer">
+            <p>&copy; 2024 Confeitaria Delícia. Todos os direitos reservados.</p>
+        </div>
     </footer>
 
     <script src="script.js"></script>
