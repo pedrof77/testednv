@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
     const apiBaseUrl = "https://api-igljz2gr6-pedrof77s-projects.vercel.app/api";
-    
+
     const feedbackContainer = document.getElementById("feedback"); // Container para mensagens de feedback
     const avaliacoesContainer = document.getElementById("avaliacoes-container"); // Container para exibir avaliações
-    
+
     const mostrarFeedback = (mensagem, tipo) => {
         feedbackContainer.textContent = mensagem;
         feedbackContainer.className = tipo; // Define a classe para o estilo (sucesso ou erro)
@@ -12,19 +12,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // Função para enviar avaliação
     const enviarAvaliacao = async (produtoId, rating) => {
         try {
-            const token = localStorage.getItem("jwt_token");
-            if (!token) {
-                mostrarFeedback("Token não encontrado. Por favor, faça login.", "erro");
-                return;
-            }
-
             const resposta = await fetch(`${apiBaseUrl}/avaliacoes`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
                 },
-                body: JSON.stringify({ produtoId: Number(produtoId), rating: Number(rating) })
+                body: JSON.stringify({ produtoId: Number(produtoId), rating: Number(rating) }),
             });
 
             if (!resposta.ok) {
@@ -39,49 +32,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Função para realizar a compra
-    const realizarCompra = async (produtoId) => {
-        try {
-            const token = localStorage.getItem("jwt_token");
-            if (!token) {
-                mostrarFeedback("Token não encontrado. Por favor, faça login.", "erro");
-                return;
-            }
-
-            const resposta = await fetch(`${apiBaseUrl}/compras`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({ produtoId: Number(produtoId) })
-            });
-
-            if (!resposta.ok) {
-                const errorData = await resposta.json();
-                throw new Error(errorData.error || "Erro ao realizar compra.");
-            }
-
-            mostrarFeedback("Compra realizada com sucesso!", "sucesso");
-        } catch (erro) {
-            mostrarFeedback("Erro ao realizar compra: " + erro.message, "erro");
-        }
-    };
-
     // Função para listar as avaliações
     const listarAvaliacoes = async () => {
         try {
-            const token = localStorage.getItem("jwt_token");
-            if (!token) {
-                mostrarFeedback("Token não encontrado. Por favor, faça login.", "erro");
-                return;
-            }
-
             const resposta = await fetch(`${apiBaseUrl}/avaliacoes`, {
                 method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
             });
 
             if (!resposta.ok) {
@@ -110,17 +65,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Função para excluir avaliação
     const excluirAvaliacao = async (id) => {
         try {
-            const token = localStorage.getItem("jwt_token");
-            if (!token) {
-                mostrarFeedback("Token não encontrado. Por favor, faça login.", "erro");
-                return;
-            }
-
             const resposta = await fetch(`${apiBaseUrl}/avaliacoes/${id}`, {
                 method: "DELETE",
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
             });
 
             if (!resposta.ok) {
@@ -150,14 +96,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Envia a avaliação
                 await enviarAvaliacao(produtoId, rating);
             });
-        });
-    });
-
-    // Lidar com os botões de compra
-    document.querySelectorAll(".comprar").forEach(button => {
-        button.addEventListener("click", async () => {
-            const produtoId = button.getAttribute("data-id");
-            await realizarCompra(produtoId);
         });
     });
 
