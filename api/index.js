@@ -1,4 +1,3 @@
-// Configuração do ambiente
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config(); // Carregar variáveis de ambiente para desenvolvimento
 }
@@ -12,17 +11,23 @@ app.use(cors({ origin: '*' }));
 app.use(express.json());
 
 // URL do MongoDB
-const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017'; // Substitua pelo URI local, se necessário
-const client = new MongoClient(uri);
+const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017'; // URL de conexão, com fallback para local
 
-// Conexão com o banco de dados MongoDB
+const client = new MongoClient(uri, { 
+    useNewUrlParser: true, 
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 5000 // Timeout para conexão com o MongoDB
+});
+
 let dbInstance = null;
+
+// Função de conexão com o banco de dados
 async function getDatabase() {
     if (!dbInstance) {
         try {
-            await client.connect();
+            await client.connect(); // Tenta conectar ao MongoDB
             console.log('Conectado ao MongoDB!');
-            dbInstance = client.db(process.env.MONGODB_DB || 'loja'); // Nome do banco padrão
+            dbInstance = client.db(process.env.MONGODB_DB || 'loja'); // Usa o banco de dados da variável de ambiente ou "loja"
         } catch (error) {
             console.error('Erro ao conectar ao MongoDB:', error);
             throw new Error('Falha na conexão com o banco de dados.');
@@ -36,7 +41,7 @@ app.get('/', (req, res) => {
     res.status(200).json({ message: 'API rodando com sucesso!' });
 });
 
-// **Função de Compra** - Rota POST
+// Função de Compra - Rota POST
 app.post('/api/compra', async (req, res) => {
     const { produtoId, quantidade, usuarioId, precoTotal } = req.body;
 
@@ -61,7 +66,7 @@ app.post('/api/compra', async (req, res) => {
     }
 });
 
-// **Função de Avaliação** - Rota POST
+// Função de Avaliação - Rota POST
 app.post('/api/avaliacoes', async (req, res) => {
     const { produtoId, rating } = req.body;
 
@@ -84,7 +89,7 @@ app.post('/api/avaliacoes', async (req, res) => {
     }
 });
 
-// **Função de Listar Avaliações** - Rota GET
+// Função de Listar Avaliações - Rota GET
 app.get('/api/avaliacoes', async (req, res) => {
     try {
         const db = await getDatabase();
@@ -96,7 +101,7 @@ app.get('/api/avaliacoes', async (req, res) => {
     }
 });
 
-// **Função de Atualizar Avaliação** - Rota PUT
+// Função de Atualizar Avaliação - Rota PUT
 app.put('/api/avaliacoes/:id', async (req, res) => {
     const { id } = req.params;
     const { rating } = req.body;
@@ -123,7 +128,7 @@ app.put('/api/avaliacoes/:id', async (req, res) => {
     }
 });
 
-// **Função de Excluir Avaliação** - Rota DELETE
+// Função de Excluir Avaliação - Rota DELETE
 app.delete('/api/avaliacoes/:id', async (req, res) => {
     const { id } = req.params;
 
