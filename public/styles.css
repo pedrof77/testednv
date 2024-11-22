@@ -1,0 +1,242 @@
+/* Configurações Globais */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f1e7;
+    color: #5a3e36;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #000000;
+    padding: 30px 0;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3em;
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
+    margin-top: 20px;
+}
+
+nav ul li {
+    display: inline-block;
+    margin: 0 20px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1em;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #f5a9bc;
+}
+
+/* Seções */
+section {
+    padding: 60px 20px;
+    margin: 30px auto;
+    max-width: 1200px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+section h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #5a3e36;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Galeria de Produtos */
+.galeria-produtos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    justify-items: center;
+    padding-top: 20px;
+}
+
+.produto {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 25px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 280px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.produto:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.produto img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.produto h3 {
+    font-size: 1.5em;
+    margin-top: 15px;
+    color: #5a3e36;
+    font-weight: bold;
+}
+
+.produto p {
+    color: #333;
+    margin: 10px 0;
+    font-size: 1.1em;
+}
+
+/* Botão Comprar */
+.comprar {
+    background-color: #ffc107;
+    border: none;
+    color: #fff;
+    padding: 12px 18px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 15px;
+    font-size: 1.2em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.comprar:hover {
+    background-color: #e0a800;
+    transform: scale(1.05);
+}
+
+/* Campo de Quantidade */
+.quantidade {
+    width: 60px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1em;
+    margin-top: 10px;
+}
+
+/* Avaliações */
+.avaliacao {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 20px;
+}
+
+.estrela {
+    font-size: 1.8em;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.estrela:hover,
+.estrela.selecionada {
+    color: #f5a9bc;
+}
+
+/* Feedback e Botões de Avaliações */
+#avaliacoes button {
+    background-color: #f5a9bc;
+    border: none;
+    color: #fff;
+    padding: 12px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1.2em;
+    margin: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#avaliacoes button:hover {
+    background-color: #e08294;
+    transform: scale(1.05);
+}
+
+#feedback {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 1.2em;
+    padding: 10px;
+}
+
+#feedback.success {
+    color: #4caf50;
+}
+
+#feedback.error {
+    color: #e53935;
+}
+
+#avaliacoes-container {
+    margin-top: 30px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Contato */
+#contato a {
+    color: #f5a9bc;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#contato a:hover {
+    color: #ffc107;
+}
+
+/* Rodapé */
+footer {
+    background-color: #000000;
+    color: #fff;
+    text-align: center;
+    padding: 20px 10px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    box-shadow: 0px -2px 8px rgba(0, 0, 0, 0.1);
+    font-size: 1.1em;
+    text-transform: uppercase;
+}
+
+footer a {
+    color: #f5a9bc;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer a:hover {
+    color: #ffc107;
+}
