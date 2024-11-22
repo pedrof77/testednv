@@ -13,8 +13,11 @@ app.use(express.json());
 // URL do MongoDB
 const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017'; // Fallback para banco local, se necessário
 const client = new MongoClient(uri, {
-    serverSelectionTimeoutMS: 5000 // Timeout para conexão com o MongoDB
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 10000 // Aumenta o timeout para 10 segundos
 });
+
 
 let dbInstance = null;
 
