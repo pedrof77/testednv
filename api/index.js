@@ -11,11 +11,8 @@ app.use(cors({ origin: '*' }));
 app.use(express.json());
 
 // URL do MongoDB
-const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017'; // URL de conexão, com fallback para local
-
-const client = new MongoClient(uri, { 
-    useNewUrlParser: true, 
-    useUnifiedTopology: true,
+const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017'; // Fallback para banco local, se necessário
+const client = new MongoClient(uri, {
     serverSelectionTimeoutMS: 5000 // Timeout para conexão com o MongoDB
 });
 
@@ -27,9 +24,9 @@ async function getDatabase() {
         try {
             await client.connect(); // Tenta conectar ao MongoDB
             console.log('Conectado ao MongoDB!');
-            dbInstance = client.db(process.env.MONGODB_DB || 'loja'); // Usa o banco de dados da variável de ambiente ou "loja"
+            dbInstance = client.db(process.env.MONGODB_DB || 'loja'); // Nome do banco de dados padrão
         } catch (error) {
-            console.error('Erro ao conectar ao MongoDB:', error);
+            console.error('Erro ao conectar ao MongoDB:', error.stack);
             throw new Error('Falha na conexão com o banco de dados.');
         }
     }
@@ -41,7 +38,7 @@ app.get('/', (req, res) => {
     res.status(200).json({ message: 'API rodando com sucesso!' });
 });
 
-// Função de Compra - Rota POST
+// **Função de Compra** - Rota POST
 app.post('/api/compra', async (req, res) => {
     const { produtoId, quantidade, usuarioId, precoTotal } = req.body;
 
@@ -61,12 +58,12 @@ app.post('/api/compra', async (req, res) => {
 
         res.status(201).json({ message: 'Compra realizada com sucesso!', id: resultado.insertedId });
     } catch (error) {
-        console.error('Erro ao processar a compra:', error);
+        console.error('Erro ao processar a compra:', error.stack);
         res.status(500).json({ error: 'Erro interno ao processar a compra.' });
     }
 });
 
-// Função de Avaliação - Rota POST
+// **Função de Avaliação** - Rota POST
 app.post('/api/avaliacoes', async (req, res) => {
     const { produtoId, rating } = req.body;
 
@@ -84,24 +81,24 @@ app.post('/api/avaliacoes', async (req, res) => {
 
         res.status(201).json({ message: 'Avaliação enviada com sucesso!', id: resultado.insertedId });
     } catch (error) {
-        console.error('Erro ao criar avaliação:', error);
+        console.error('Erro ao criar avaliação:', error.stack);
         res.status(500).json({ error: 'Erro interno ao criar avaliação.' });
     }
 });
 
-// Função de Listar Avaliações - Rota GET
+// **Função de Listar Avaliações** - Rota GET
 app.get('/api/avaliacoes', async (req, res) => {
     try {
         const db = await getDatabase();
         const avaliacoes = await db.collection('avaliacoes').find().toArray();
         res.status(200).json(avaliacoes);
     } catch (error) {
-        console.error('Erro ao listar avaliações:', error);
+        console.error('Erro ao listar avaliações:', error.stack);
         res.status(500).json({ error: 'Erro interno ao listar avaliações.' });
     }
 });
 
-// Função de Atualizar Avaliação - Rota PUT
+// **Função de Atualizar Avaliação** - Rota PUT
 app.put('/api/avaliacoes/:id', async (req, res) => {
     const { id } = req.params;
     const { rating } = req.body;
@@ -123,12 +120,12 @@ app.put('/api/avaliacoes/:id', async (req, res) => {
 
         res.status(200).json({ message: 'Avaliação atualizada com sucesso!' });
     } catch (error) {
-        console.error('Erro ao atualizar avaliação:', error);
+        console.error('Erro ao atualizar avaliação:', error.stack);
         res.status(500).json({ error: 'Erro interno ao atualizar avaliação.' });
     }
 });
 
-// Função de Excluir Avaliação - Rota DELETE
+// **Função de Excluir Avaliação** - Rota DELETE
 app.delete('/api/avaliacoes/:id', async (req, res) => {
     const { id } = req.params;
 
@@ -142,7 +139,7 @@ app.delete('/api/avaliacoes/:id', async (req, res) => {
 
         res.status(200).json({ message: 'Avaliação excluída com sucesso!' });
     } catch (error) {
-        console.error('Erro ao excluir avaliação:', error);
+        console.error('Erro ao excluir avaliação:', error.stack);
         res.status(500).json({ error: 'Erro interno ao excluir avaliação.' });
     }
 });
@@ -155,5 +152,5 @@ if (process.env.NODE_ENV !== 'production') {
     });
 }
 
-// Exportar para Vercel
+// Exportar para Vercel ou outro serviço de hospedagem
 module.exports = app;
