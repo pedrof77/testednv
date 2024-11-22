@@ -27,7 +27,7 @@ async function getDatabase() {
         try {
             await client.connect(); // Tenta conectar ao MongoDB
             console.log('Conectado ao MongoDB!');
-            dbInstance = client.db(process.env.MONGODB_DB || 'loja'); // Nome do banco de dados padrão
+            dbInstance = client.db(process.env.MONGODB_DB || 'teste'); // Nome do banco de dados padrão
         } catch (error) {
             console.error('Erro ao conectar ao MongoDB:', error.stack);
             throw new Error('Falha na conexão com o banco de dados.');
