@@ -15,7 +15,7 @@ const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017'; // Fallback 
 const client = new MongoClient(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 10000 // Aumenta o timeout para 10 segundos
+    serverSelectionTimeoutMS: 100000 // Aumenta o timeout para 10 segundos
 });
 
 
@@ -25,16 +25,18 @@ let dbInstance = null;
 async function getDatabase() {
     if (!dbInstance) {
         try {
-            await client.connect(); // Tenta conectar ao MongoDB
+            console.log("Tentando conectar ao MongoDB...");
+            await client.connect();
             console.log('Conectado ao MongoDB!');
-            dbInstance = client.db(process.env.MONGODB_DB || 'teste'); // Nome do banco de dados padrão
+            dbInstance = client.db(process.env.MONGODB_DB || 'loja');
         } catch (error) {
-            console.error('Erro ao conectar ao MongoDB:', error.stack);
+            console.error('Erro ao conectar ao MongoDB:', error);
             throw new Error('Falha na conexão com o banco de dados.');
         }
     }
     return dbInstance;
 }
+
 
 // Rota base para verificação
 app.get('/', (req, res) => {
