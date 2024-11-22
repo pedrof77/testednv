@@ -1,5 +1,5 @@
 if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config(); // Carregar variáveis de ambiente para desenvolvimento
+    require('dotenv').config(); 
 }
 
 const express = require('express');
@@ -10,18 +10,18 @@ const app = express();
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 
-// URL do MongoDB
-const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017'; // Fallback para banco local, se necessário
+
+const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017'; 
 const client = new MongoClient(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 100000 // Aumenta o timeout para 10 segundos
+    serverSelectionTimeoutMS: 100000 
 });
 
 
 let dbInstance = null;
 
-// Função de conexão com o banco de dados
+
 async function getDatabase() {
     if (!dbInstance) {
         try {
@@ -38,12 +38,12 @@ async function getDatabase() {
 }
 
 
-// Rota base para verificação
+
 app.get('/', (req, res) => {
     res.status(200).json({ message: 'API rodando com sucesso!' });
 });
 
-// **Função de Compra** - Rota POST
+
 app.post('/api/compra', async (req, res) => {
     const { produtoId, quantidade, usuarioId, precoTotal } = req.body;
 
@@ -68,7 +68,7 @@ app.post('/api/compra', async (req, res) => {
     }
 });
 
-// **Função de Avaliação** - Rota POST
+
 app.post('/api/avaliacoes', async (req, res) => {
     const { produtoId, rating } = req.body;
 
@@ -91,7 +91,7 @@ app.post('/api/avaliacoes', async (req, res) => {
     }
 });
 
-// **Função de Listar Avaliações** - Rota GET
+
 app.get('/api/avaliacoes', async (req, res) => {
     try {
         const db = await getDatabase();
@@ -103,7 +103,7 @@ app.get('/api/avaliacoes', async (req, res) => {
     }
 });
 
-// **Função de Atualizar Avaliação** - Rota PUT
+
 app.put('/api/avaliacoes/:id', async (req, res) => {
     const { id } = req.params;
     const { rating } = req.body;
@@ -130,7 +130,7 @@ app.put('/api/avaliacoes/:id', async (req, res) => {
     }
 });
 
-// **Função de Excluir Avaliação** - Rota DELETE
+
 app.delete('/api/avaliacoes/:id', async (req, res) => {
     const { id } = req.params;
 
@@ -149,7 +149,7 @@ app.delete('/api/avaliacoes/:id', async (req, res) => {
     }
 });
 
-// Inicializar servidor em localhost
+
 const port = process.env.PORT || 3000;
 if (process.env.NODE_ENV !== 'production') {
     app.listen(port, () => {
@@ -157,5 +157,5 @@ if (process.env.NODE_ENV !== 'production') {
     });
 }
 
-// Exportar para Vercel ou outro serviço de hospedagem
+
 module.exports = app;

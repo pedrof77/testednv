@@ -1,17 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // URL da API
-    const apiBaseUrl = "https://api-igljz2gr6-pedrof77s-projects.vercel.app/api";
+    
+    const apiBaseUrl = "https://api-pedrof77s-projects.vercel.app/api";
 
-    const feedbackContainer = document.getElementById("feedback"); // Container para mensagens de feedback
-    const avaliacoesContainer = document.getElementById("avaliacoes-container"); // Container para exibir avaliações
-    const comprasContainer = document.getElementById("compras-container"); // Container para exibir compras
+    const feedbackContainer = document.getElementById("feedback"); 
+    const avaliacoesContainer = document.getElementById("avaliacoes-container"); 
+    const comprasContainer = document.getElementById("compras-container"); 
 
     const mostrarFeedback = (mensagem, tipo) => {
         feedbackContainer.textContent = mensagem;
-        feedbackContainer.className = tipo; // Define a classe para o estilo (sucesso ou erro)
+        feedbackContainer.className = tipo; 
     };
 
-    // Função para enviar avaliação
+    
     const enviarAvaliacao = async (produtoId, rating) => {
         try {
             const resposta = await fetch(`${apiBaseUrl}/avaliacoes`, {
@@ -28,13 +28,13 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             mostrarFeedback("Avaliação enviada com sucesso!", "sucesso");
-            listarAvaliacoes(); // Atualiza a lista de avaliações
+            listarAvaliacoes(); 
         } catch (erro) {
             mostrarFeedback("Erro ao enviar avaliação: " + erro.message, "erro");
         }
     };
 
-    // Função para listar as avaliações
+    
     const listarAvaliacoes = async () => {
         try {
             const resposta = await fetch(`${apiBaseUrl}/avaliacoes`, {
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             const avaliacoes = await resposta.json();
-            // Limpar o container antes de adicionar as avaliações
+            
             avaliacoesContainer.innerHTML = "";
 
             avaliacoes.forEach(avaliacao => {
@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Função para excluir avaliação
+    
     const excluirAvaliacao = async (id) => {
         try {
             const resposta = await fetch(`${apiBaseUrl}/avaliacoes/${id}`, {
@@ -77,13 +77,13 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             mostrarFeedback("Avaliação excluída com sucesso!", "sucesso");
-            listarAvaliacoes(); // Atualiza a lista de avaliações
+            listarAvaliacoes(); 
         } catch (erro) {
             mostrarFeedback("Erro ao excluir avaliação: " + erro.message, "erro");
         }
     };
 
-    // Função para enviar uma compra
+    
     const enviarCompra = async (produtoId, quantidade) => {
         try {
             const resposta = await fetch(`${apiBaseUrl}/compras`, {
@@ -100,13 +100,13 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             mostrarFeedback("Compra realizada com sucesso!", "sucesso");
-            listarCompras(); // Atualiza a lista de compras
+            listarCompras(); 
         } catch (erro) {
             mostrarFeedback("Erro ao realizar compra: " + erro.message, "erro");
         }
     };
 
-    // Função para listar as compras
+    
     const listarCompras = async () => {
         try {
             const resposta = await fetch(`${apiBaseUrl}/compras`, {
@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             const compras = await resposta.json();
-            // Limpar o container antes de adicionar as compras
+            
             comprasContainer.innerHTML = "";
 
             compras.forEach(compra => {
@@ -136,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Função para excluir compra
+    
     const excluirCompra = async (id) => {
         try {
             const resposta = await fetch(`${apiBaseUrl}/compras/${id}`, {
@@ -149,42 +149,42 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             mostrarFeedback("Compra excluída com sucesso!", "sucesso");
-            listarCompras(); // Atualiza a lista de compras
+            listarCompras(); 
         } catch (erro) {
             mostrarFeedback("Erro ao excluir compra: " + erro.message, "erro");
         }
     };
 
-    // Lidar com a seleção de estrelas para avaliação
+    
     document.querySelectorAll(".avaliacao").forEach(container => {
         container.querySelectorAll(".estrela").forEach(star => {
             star.addEventListener("click", async () => {
                 const produtoId = container.getAttribute("data-id");
                 const rating = star.getAttribute("data-value");
 
-                // Atualiza a classe das estrelas na interface
+                
                 container.querySelectorAll(".estrela").forEach((s, index) => {
                     s.classList.toggle("selecionada", index < rating);
                 });
 
-                // Envia a avaliação
+                
                 await enviarAvaliacao(produtoId, rating);
             });
         });
     });
 
-    // Lidar com o envio de compra
+    
     document.querySelectorAll(".compra").forEach(container => {
         container.querySelector("button").addEventListener("click", async () => {
             const produtoId = container.getAttribute("data-id");
             const quantidade = container.querySelector("input").value;
 
-            // Envia a compra
+            
             await enviarCompra(produtoId, quantidade);
         });
     });
 
-    // Carregar avaliações e compras ao iniciar a página
+    
     listarAvaliacoes();
     listarCompras();
 });

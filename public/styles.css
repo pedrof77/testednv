@@ -1,4 +1,4 @@
-/* Configurações Globais */
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
@@ -52,7 +52,7 @@ nav ul li a:hover {
     color: #f5a9bc;
 }
 
-/* Seções */
+
 section {
     padding: 60px 20px;
     margin: 30px auto;
@@ -70,7 +70,7 @@ section h2 {
     text-align: center;
 }
 
-/* Galeria de Produtos */
+
 .galeria-produtos {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -116,7 +116,7 @@ section h2 {
     font-size: 1.1em;
 }
 
-/* Botão Comprar */
+
 .comprar {
     background-color: #ffc107;
     border: none;
@@ -134,7 +134,7 @@ section h2 {
     transform: scale(1.05);
 }
 
-/* Campo de Quantidade */
+
 .quantidade {
     width: 60px;
     padding: 8px;
@@ -145,7 +145,7 @@ section h2 {
     margin-top: 10px;
 }
 
-/* Avaliações */
+
 .avaliacao {
     display: flex;
     justify-content: center;
@@ -165,7 +165,7 @@ section h2 {
     color: #f5a9bc;
 }
 
-/* Feedback e Botões de Avaliações */
+
 #avaliacoes button {
     background-color: #f5a9bc;
     border: none;
@@ -206,7 +206,7 @@ section h2 {
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* Contato */
+
 #contato a {
     color: #f5a9bc;
     text-decoration: none;
@@ -217,7 +217,7 @@ section h2 {
     color: #ffc107;
 }
 
-/* Rodapé */
+
 footer {
     background-color: #000000;
     color: #fff;
