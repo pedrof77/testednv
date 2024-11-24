@@ -8,10 +8,10 @@ const app = express();
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 
-// Configuração do MongoDB
-const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017';
-const client = new MongoClient(uri, { serverSelectionTimeoutMS: 10000 });
-let dbInstance;
+// Conexão com o banco MongoDB Atlas
+const uri = process.env.MONGODB_URI || 'mongodb+srv://augustopietro482:88323571@cluster0.991nw.mongodb.net/';
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+let db, collection;
 
 /**
  * Retorna a instância do banco de dados.
