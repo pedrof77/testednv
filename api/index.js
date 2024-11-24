@@ -1,5 +1,3 @@
-if (process.env.NODE_ENV !== 'production') require('dotenv').config();
-
 const express = require('express');
 const cors = require('cors');
 const { MongoClient, ObjectId } = require('mongodb');
@@ -8,10 +6,9 @@ const app = express();
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 
-// Conexão com o banco MongoDB Atlas
-const uri = process.env.MONGODB_URI || 'mongodb+srv://augustopietro482:88323571@cluster0.991nw.mongodb.net/';
+const uri = 'mongodb+srv://augustopietro482:88323571@cluster0.991nw.mongodb.net/'; // URI direta, conforme solicitado
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-let db, collection;
+let dbInstance;
 
 /**
  * Retorna a instância do banco de dados.
@@ -21,7 +18,7 @@ async function getDatabase() {
         try {
             console.log("Conectando ao MongoDB...");
             await client.connect();
-            dbInstance = client.db(process.env.MONGODB_DB || 'loja');
+            dbInstance = client.db('loja'); // Nome do banco de dados
             console.log("Conexão com o MongoDB estabelecida.");
         } catch (error) {
             console.error("Erro ao conectar ao MongoDB:", error);
@@ -42,6 +39,10 @@ app.post('/api/compra', async (req, res) => {
 
     if (!produtoId || !quantidade || !usuarioId || !precoTotal || quantidade <= 0 || precoTotal <= 0) {
         return res.status(400).json({ error: 'Dados inválidos. Verifique os campos.' });
+    }
+
+    if (!ObjectId.isValid(produtoId) || !ObjectId.isValid(usuarioId)) {
+        return res.status(400).json({ error: 'IDs inválidos para produto ou usuário.' });
     }
 
     try {
@@ -68,6 +69,10 @@ app.post('/api/avaliacoes', async (req, res) => {
 
     if (!produtoId || !rating || rating < 1 || rating > 5) {
         return res.status(400).json({ error: 'Avaliação inválida. Deve estar entre 1 e 5.' });
+    }
+
+    if (!ObjectId.isValid(produtoId)) {
+        return res.status(400).json({ error: 'ID do produto inválido.' });
     }
 
     try {
@@ -109,6 +114,10 @@ app.put('/api/avaliacoes/:id', async (req, res) => {
         return res.status(400).json({ error: 'Avaliação inválida. Deve estar entre 1 e 5.' });
     }
 
+    if (!ObjectId.isValid(id)) {
+        return res.status(400).json({ error: 'ID da avaliação inválido.' });
+    }
+
     try {
         const db = await getDatabase();
         const resultado = await db.collection('avaliacoes').updateOne(
@@ -128,6 +137,10 @@ app.put('/api/avaliacoes/:id', async (req, res) => {
  */
 app.delete('/api/avaliacoes/:id', async (req, res) => {
     const { id } = req.params;
+
+    if (!ObjectId.isValid(id)) {
+        return res.status(400).json({ error: 'ID da avaliação inválido.' });
+    }
 
     try {
         const db = await getDatabase();
