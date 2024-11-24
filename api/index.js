@@ -32,36 +32,6 @@ async function getDatabase() {
 app.get('/', (req, res) => res.status(200).json({ message: 'API rodando com sucesso!' }));
 
 /**
- * Criação de uma nova compra.
- */
-app.post('/api/compra', async (req, res) => {
-    const { produtoId, quantidade, usuarioId, precoTotal } = req.body;
-
-    if (!produtoId || !quantidade || !usuarioId || !precoTotal || quantidade <= 0 || precoTotal <= 0) {
-        return res.status(400).json({ error: 'Dados inválidos. Verifique os campos.' });
-    }
-
-    if (!ObjectId.isValid(produtoId) || !ObjectId.isValid(usuarioId)) {
-        return res.status(400).json({ error: 'IDs inválidos para produto ou usuário.' });
-    }
-
-    try {
-        const db = await getDatabase();
-        const resultado = await db.collection('compras').insertOne({
-            produtoId: new ObjectId(produtoId),
-            quantidade,
-            usuarioId: new ObjectId(usuarioId),
-            precoTotal,
-            date: new Date(),
-        });
-        res.status(201).json({ message: 'Compra realizada com sucesso!', id: resultado.insertedId });
-    } catch (error) {
-        console.error("Erro ao processar compra:", error);
-        res.status(500).json({ error: 'Erro interno ao processar a compra.' });
-    }
-});
-
-/**
  * Criação de uma nova avaliação.
  */
 app.post('/api/avaliacoes', async (req, res) => {
