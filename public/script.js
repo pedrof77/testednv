@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     
-    const apiBaseUrl = "https://api-pedrof77s-projects.vercel.app/api";
+    const apiBaseUrl = "https://api-gilt-pi.vercel.app";
 
     const feedbackContainer = document.getElementById("feedback"); 
     const avaliacoesContainer = document.getElementById("avaliacoes-container"); 
