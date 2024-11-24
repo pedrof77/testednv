@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => { 
     const apiBaseUrl = "https://api-gilt-pi.vercel.app";
 
     const feedbackContainer = document.getElementById("feedback");
@@ -21,12 +21,18 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             if (!resposta.ok) {
-                const errorData = await resposta.json();
-                throw new Error(errorData.error || "Erro ao enviar avaliação.");
+                const contentType = resposta.headers.get("content-type");
+                if (contentType && contentType.includes("application/json")) {
+                    const errorData = await resposta.json();
+                    throw new Error(errorData.error || "Erro ao enviar avaliação.");
+                } else {
+                    throw new Error("Resposta inesperada do servidor.");
+                }
             }
 
             mostrarFeedback("Avaliação enviada com sucesso!", "sucesso");
         } catch (erro) {
+            console.error("Erro ao enviar avaliação:", erro);
             mostrarFeedback("Erro ao enviar avaliação: " + erro.message, "erro");
         }
     };
@@ -42,12 +48,18 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             if (!resposta.ok) {
-                const errorData = await resposta.json();
-                throw new Error(errorData.error || "Erro ao enviar compra.");
+                const contentType = resposta.headers.get("content-type");
+                if (contentType && contentType.includes("application/json")) {
+                    const errorData = await resposta.json();
+                    throw new Error(errorData.error || "Erro ao enviar compra.");
+                } else {
+                    throw new Error("Resposta inesperada do servidor.");
+                }
             }
 
             mostrarFeedback("Compra realizada com sucesso!", "sucesso");
         } catch (erro) {
+            console.error("Erro ao realizar compra:", erro);
             mostrarFeedback("Erro ao realizar compra: " + erro.message, "erro");
         }
     };
@@ -59,8 +71,13 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             if (!resposta.ok) {
-                const errorData = await resposta.json();
-                throw new Error(errorData.error || "Erro ao listar avaliações.");
+                const contentType = resposta.headers.get("content-type");
+                if (contentType && contentType.includes("application/json")) {
+                    const errorData = await resposta.json();
+                    throw new Error(errorData.error || "Erro ao listar avaliações.");
+                } else {
+                    throw new Error("Resposta inesperada do servidor.");
+                }
             }
 
             const avaliacoes = await resposta.json();
@@ -76,6 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 avaliacoesContainer.appendChild(avaliacaoElement);
             });
         } catch (erro) {
+            console.error("Erro ao listar avaliações:", erro);
             mostrarFeedback("Erro ao listar avaliações: " + erro.message, "erro");
         }
     };
@@ -87,13 +105,19 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             if (!resposta.ok) {
-                const errorData = await resposta.json();
-                throw new Error(errorData.error || "Erro ao excluir avaliação.");
+                const contentType = resposta.headers.get("content-type");
+                if (contentType && contentType.includes("application/json")) {
+                    const errorData = await resposta.json();
+                    throw new Error(errorData.error || "Erro ao excluir avaliação.");
+                } else {
+                    throw new Error("Resposta inesperada do servidor.");
+                }
             }
 
             mostrarFeedback("Avaliação excluída com sucesso!", "sucesso");
             listarAvaliacoes();
         } catch (erro) {
+            console.error("Erro ao excluir avaliação:", erro);
             mostrarFeedback("Erro ao excluir avaliação: " + erro.message, "erro");
         }
     };
