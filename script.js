@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const enviarAvaliacao = async (produtoId, rating) => {
         try {
-            const resposta = await fetch(`${apiBaseUrl}/avaliacoes`, {
+            const resposta = await fetch(`${apiBaseUrl}/api/avaliacoes`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const enviarCompra = async (produtoId, quantidade) => {
         try {
-            const resposta = await fetch(`${apiBaseUrl}/compras`, {
+            const resposta = await fetch(`${apiBaseUrl}/api/compras`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const listarAvaliacoes = async () => {
         try {
-            const resposta = await fetch(`${apiBaseUrl}/avaliacoes`, {
+            const resposta = await fetch(`${apiBaseUrl}/api/avaliacoes`, {
                 method: "GET",
             });
 
@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.excluirAvaliacao = async (id) => {
         try {
-            const resposta = await fetch(`${apiBaseUrl}/avaliacoes/${id}`, {
+            const resposta = await fetch(`${apiBaseUrl}/api/avaliacoes/${id}`, {
                 method: "DELETE",
             });
 
