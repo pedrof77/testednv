@@ -99,6 +99,27 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
+    // Processo de envio de avaliação ao clicar nas estrelas
+    produtos.forEach((produto) => {
+        const estrelas = produto.querySelectorAll(".estrela");
+        const produtoId = produto.querySelector(".avaliacao").getAttribute("data-id"); // Pega o ID fixo do produto
+
+        estrelas.forEach((estrela) => {
+            estrela.addEventListener("click", async () => {
+                const rating = estrela.getAttribute("data-value");
+
+                // Atualiza as estrelas visualmente
+                estrelas.forEach((s, index) => {
+                    s.classList.toggle("selecionada", index < rating);
+                });
+
+                // Envia a avaliação para o backend, passando o produtoId e a rating
+                await enviarAvaliacao(produtoId, rating);
+            });
+        });
+    });
+
+
     const enviarCompra = async (produtoId, quantidade) => {
         try {
             const resposta = await fetch(`${apiBaseUrl}/api/compras`, {
