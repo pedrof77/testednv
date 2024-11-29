@@ -31,33 +31,46 @@ async function getDatabase() {
 // Rotas
 app.get('/', (req, res) => res.status(200).json({ message: 'API rodando com sucesso!' }));
 
-/**
- * Criação de uma nova avaliação.
- */
+// Rotas
 app.post('/api/avaliacoes', async (req, res) => {
     const { produtoId, rating } = req.body;
 
+    // Validação dos dados
     if (!produtoId || !rating || rating < 1 || rating > 5) {
-        return res.status(400).json({ error: 'Avaliação inválida. Deve estar entre 1 e 5.' });
-    }
-
-    if (!ObjectId.isValid(produtoId)) {
-        return res.status(400).json({ error: 'ID do produto inválido.' });
+        return res.status(400).json({ error: 'Avaliação inválida. O rating deve estar entre 1 e 5.' });
     }
 
     try {
         const db = await getDatabase();
-        const resultado = await db.collection('avaliacoes').insertOne({
-            produtoId: new ObjectId(produtoId),
-            rating,
-            date: new Date(),
-        });
+
+        // Verifica se o produto existe com o produtoId
+        const produto = await db.collection('produtos').findOne({ _id: produtoId });
+
+        if (!produto) {
+            return res.status(404).json({ error: 'Produto não encontrado.' });
+        }
+
+        // Criando a avaliação (sem passar o _id para forçar o MongoDB a gerar o seu próprio ObjectId)
+        const novaAvaliacao = {
+            produtoId,   // produtoId é o número, como 1
+            rating,      // A nota da avaliação
+            date: new Date(),  // Data da avaliação
+        };
+
+        // Inserindo a avaliação no banco de dados
+        const resultado = await db.collection('avaliacoes').insertOne(novaAvaliacao);
+
+        // Retornando o resultado com o id gerado para a avaliação
         res.status(201).json({ message: 'Avaliação criada com sucesso!', id: resultado.insertedId });
     } catch (error) {
         console.error("Erro ao criar avaliação:", error);
         res.status(500).json({ error: 'Erro interno ao criar avaliação.' });
     }
 });
+
+
+//
+
 
 /**
  * Listagem de todas as avaliações.
@@ -101,6 +114,18 @@ app.put('/api/avaliacoes/:id', async (req, res) => {
         res.status(500).json({ error: 'Erro interno ao atualizar avaliação.' });
     }
 });
+
+app.get('/api/produtos', async (req, res) => {
+    try {
+        const db = await getDatabase();
+        const produtos = await db.collection('produtos').find().toArray();
+        res.status(200).json(produtos);
+    } catch (error) {
+        console.error("Erro ao listar produtos:", error);
+        res.status(500).json({ error: 'Erro interno ao listar produtos.' });
+    }
+});
+
 
 /**
  * Exclusão de uma avaliação.

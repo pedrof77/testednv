@@ -36,12 +36,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const feedbackContainer = document.getElementById("feedback");
     const avaliacoesContainer = document.getElementById("avaliacoes-container");
+    const listarAvaliacoesButton = document.getElementById("listar-avaliacoes");
     const produtos = document.querySelectorAll(".produto");
 
     // Função para mostrar o feedback usando o modal
     const mostrarFeedback = (mensagem, tipo) => {
         const modal = document.getElementById("modal-feedback");
         const modalMessage = document.getElementById("modal-message");
+        const modalAtualizar = document.getElementById("modal-atualizar");
 
         // Define a mensagem no modal
         modalMessage.textContent = mensagem;
@@ -142,15 +144,22 @@ document.addEventListener("DOMContentLoaded", () => {
             const avaliacoes = await resposta.json();
             avaliacoesContainer.innerHTML = "";
 
+            if (avaliacoes.length === 0) {
+                avaliacoesContainer.innerHTML = "<p>Não há avaliações para exibir.</p>";
+                return;
+            }
+
             avaliacoes.forEach((avaliacao) => {
                 const avaliacaoElement = document.createElement("div");
                 avaliacaoElement.classList.add("avaliacao-item");
                 avaliacaoElement.innerHTML = `
                     <p>Produto ID: ${avaliacao.produtoId}, Nota: ${avaliacao.rating}</p>
                     <button onclick="excluirAvaliacao('${avaliacao._id}')">Excluir</button>
+                    <button onclick="atualizarAvaliacao('${avaliacao._id}', ${avaliacao.rating})">Atualizar</button>
                 `;
                 avaliacoesContainer.appendChild(avaliacaoElement);
             });
+
         } catch (erro) {
             console.error("Erro ao listar avaliações:", erro);
             mostrarFeedback("Erro ao listar avaliações: " + erro.message, "erro");
@@ -178,6 +187,74 @@ document.addEventListener("DOMContentLoaded", () => {
             mostrarFeedback("Erro ao excluir avaliação: " + erro.message, "erro");
         }
     };
+
+    // Função para atualizar a avaliação
+     // Função para atualizar a avaliação
+     window.atualizarAvaliacao = (id, ratingAtual) => {
+        const modalAtualizar = document.getElementById("modal-atualizar");
+        const novoRatingInput = document.getElementById("novo-rating");
+        const confirmarAtualizarBtn = document.getElementById("confirmar-atualizar");
+
+        // Preenche o campo com a avaliação atual
+        novoRatingInput.value = ratingAtual;
+
+        // Exibe o modal de atualização
+        modalAtualizar.style.display = "flex";
+
+        // Fechar o modal de atualização ao clicar no "x"
+        const closeModalAtualizar = document.getElementById("modal-close-atualizar");
+        closeModalAtualizar.onclick = () => {
+            modalAtualizar.style.display = "none";
+        };
+
+        // Fechar o modal de atualização ao clicar fora do conteúdo
+        window.onclick = (event) => {
+            if (event.target === modalAtualizar) {
+                modalAtualizar.style.display = "none";
+            }
+        };
+
+        // Ação de confirmar atualização
+        confirmarAtualizarBtn.onclick = async () => {
+            const novoRating = novoRatingInput.value;
+            if (novoRating >= 1 && novoRating <= 5) {
+                try {
+                    const resposta = await fetch(`${apiBaseUrl}/api/avaliacoes/${id}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ rating: parseInt(novoRating, 10) }),
+                    });
+
+                    if (!resposta.ok) {
+                        const contentType = resposta.headers.get("content-type");
+                        if (contentType && contentType.includes("application/json")) {
+                            const errorData = await resposta.json();
+                            throw new Error(errorData.error || "Erro ao atualizar avaliação.");
+                        } else {
+                            throw new Error("Resposta inesperada do servidor.");
+                        }
+                    }
+
+                    // Exibir mensagem de sucesso
+                    mostrarFeedback("Avaliação atualizada com sucesso!", "sucesso");
+                    listarAvaliacoes(); // Recarrega as avaliações após atualização
+
+                    // Fechar o modal de atualização
+                    modalAtualizar.style.display = "none";
+                } catch (erro) {
+                    console.error("Erro ao atualizar avaliação:", erro);
+                    mostrarFeedback("Erro ao atualizar avaliação: " + erro.message, "erro");
+                }
+            } else {
+                mostrarFeedback("Rating inválido. Por favor, insira um número entre 1 e 5.", "erro");
+            }
+        };
+    };
+
+
+
 
     // Processamento das interações com o produto
     produtos.forEach((produto) => {
@@ -210,5 +287,5 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    listarAvaliacoes();
+    listarAvaliacoesButton.addEventListener("click", listarAvaliacoes);
 });
