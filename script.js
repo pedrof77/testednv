@@ -72,8 +72,9 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     };
 
-    const enviarAvaliacao = async (produtoId, rating) => {
+    const enviarAvaliacao = async (produtoId, rating) => {  
         try {
+            // Envia a requisição para criar a avaliação
             const resposta = await fetch(`${apiBaseUrl}/api/avaliacoes`, {
                 method: "POST",
                 headers: {
@@ -81,7 +82,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 },
                 body: JSON.stringify({ produtoId: Number(produtoId), rating: Number(rating) }),
             });
-
+    
+            // Verifica se a resposta foi ok
             if (!resposta.ok) {
                 const contentType = resposta.headers.get("content-type");
                 if (contentType && contentType.includes("application/json")) {
@@ -91,35 +93,39 @@ document.addEventListener("DOMContentLoaded", () => {
                     throw new Error("Resposta inesperada do servidor.");
                 }
             }
-
-            mostrarFeedback("Avaliação enviada com sucesso!", "sucesso");
+    
+            // A resposta agora inclui o nome do produto
+            const respostaJson = await resposta.json();
+            const produtoNome = respostaJson.produtoNome || 'Produto'; // Define o nome do produto aqui
+    
+            // Mostra a mensagem de feedback com o nome do produto
+            mostrarFeedback(`Avaliação enviada com sucesso para o produto: ${produtoNome}!`, "sucesso");
         } catch (erro) {
             console.error("Erro ao enviar avaliação:", erro);
             mostrarFeedback("Erro ao enviar avaliação: " + erro.message, "erro");
         }
     };
-
+    
     // Processo de envio de avaliação ao clicar nas estrelas
     produtos.forEach((produto) => {
         const estrelas = produto.querySelectorAll(".estrela");
         const produtoId = produto.querySelector(".avaliacao").getAttribute("data-id"); // Pega o ID fixo do produto
-
+    
         estrelas.forEach((estrela) => {
             estrela.addEventListener("click", async () => {
                 const rating = estrela.getAttribute("data-value");
-
+    
                 // Atualiza as estrelas visualmente
                 estrelas.forEach((s, index) => {
                     s.classList.toggle("selecionada", index < rating);
                 });
-
+    
                 // Envia a avaliação para o backend, passando o produtoId e a rating
                 await enviarAvaliacao(produtoId, rating);
             });
         });
     });
-
-
+    
     const enviarCompra = async (produtoId, quantidade) => {
         try {
             const resposta = await fetch(`${apiBaseUrl}/api/compras`, {
@@ -174,7 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const avaliacaoElement = document.createElement("div");
                 avaliacaoElement.classList.add("avaliacao-item");
                 avaliacaoElement.innerHTML = `
-                    <p>Produto ID: ${avaliacao.produtoId}, Nota: ${avaliacao.rating}</p>
+                    <p>Produto: ${avaliacao.produtoNome} (ID: ${avaliacao.produtoId}), Nota: ${avaliacao.rating}</p>
                     <button onclick="excluirAvaliacao('${avaliacao._id}')">Excluir</button>
                     <button onclick="atualizarAvaliacao('${avaliacao._id}', ${avaliacao.rating})">Atualizar</button>
                 `;

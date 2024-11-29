@@ -54,6 +54,7 @@ app.post('/api/avaliacoes', async (req, res) => {
         const novaAvaliacao = {
             produtoId,   // produtoId é o número, como 1
             rating,      // A nota da avaliação
+            produtoNome: produto.nome,  // Nome do produto
             date: new Date(),  // Data da avaliação
         };
 
@@ -61,7 +62,8 @@ app.post('/api/avaliacoes', async (req, res) => {
         const resultado = await db.collection('avaliacoes').insertOne(novaAvaliacao);
 
         // Retornando o resultado com o id gerado para a avaliação
-        res.status(201).json({ message: 'Avaliação criada com sucesso!', id: resultado.insertedId });
+        res.status(201).json({ message: 'Avaliação criada com sucesso!', id: resultado.insertedId, produtoNome: novaAvaliacao.produtoNome });
+
     } catch (error) {
         console.error("Erro ao criar avaliação:", error);
         res.status(500).json({ error: 'Erro interno ao criar avaliação.' });
@@ -78,13 +80,25 @@ app.post('/api/avaliacoes', async (req, res) => {
 app.get('/api/avaliacoes', async (req, res) => {
     try {
         const db = await getDatabase();
+
+        // Buscando todas as avaliações
         const avaliacoes = await db.collection('avaliacoes').find().toArray();
-        res.status(200).json(avaliacoes);
+
+        // Para cada avaliação, vamos buscar o nome do produto correspondente
+        for (let i = 0; i < avaliacoes.length; i++) {
+            const produto = await db.collection('produtos').findOne({ _id: avaliacoes[i].produtoId });
+            if (produto) {
+                avaliacoes[i].produtoNome = produto.nome;  // Adiciona o nome do produto
+            }
+        }
+
+        res.status(200).json(avaliacoes);  // Retorna todas as avaliações com o nome do produto
     } catch (error) {
         console.error("Erro ao listar avaliações:", error);
         res.status(500).json({ error: 'Erro interno ao listar avaliações.' });
     }
 });
+
 
 /**
  * Atualização de uma avaliação existente.

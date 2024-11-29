@@ -601,3 +601,67 @@ footer a:hover {
 
 */ 
 
+/* Estilo geral para as avaliações */
+.avaliacao-item {
+    background-color: #f9f9f9;  /* Fundo suave */
+    border: 1px solid #ddd;  /* Borda sutil */
+    border-radius: 8px;  /* Bordas arredondadas */
+    margin: 10px 0;  /* Espaço entre as avaliações */
+    padding: 15px;
+    font-family: Arial, sans-serif;  /* Fonte padrão */
+    display: flex;
+    flex-direction: column;  /* Organiza os itens em coluna */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  /* Sombra suave */
+}
+
+/* Estilo para o título de cada avaliação (nome do produto) */
+.avaliacao-item p {
+    font-size: 16px;  /* Tamanho da fonte */
+    color: #333;  /* Cor do texto */
+    margin: 0 0 10px 0;  /* Espaço abaixo do parágrafo */
+}
+
+/* Estilo para o nome do produto */
+.avaliacao-item p span.nome-produto {
+    font-weight: bold;  /* Deixa o nome do produto em negrito */
+    color: #2e8b57;  /* Cor verde para destaque */
+}
+
+/* Estilo para o ID do produto */
+.avaliacao-item p span.produto-id {
+    font-style: italic;  /* Deixa o ID em itálico */
+    color: #888;  /* Cor mais suave para o ID */
+    margin-left: 10px;  /* Espaço entre o nome e o ID */
+}
+
+/* Estilo para a nota */
+.avaliacao-item p span.rating {
+    font-size: 18px;  /* Tamanho maior para a nota */
+    color: #ff9900;  /* Cor laranja para a nota */
+    font-weight: bold;  /* Deixa a nota em negrito */
+}
+
+/* Estilo dos botões de excluir e atualizar */
+.avaliacao-item button {
+    background-color: #4CAF50;  /* Cor de fundo verde */
+    color: white;  /* Cor do texto branco */
+    border: none;  /* Sem borda */
+    border-radius: 5px;  /* Bordas arredondadas */
+    padding: 8px 15px;
+    margin: 5px 0;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;  /* Transição suave para mudança de cor */
+}
+
+/* Efeito de hover nos botões */
+.avaliacao-item button:hover {
+    background-color: #45a049;  /* Cor mais escura quando o botão é pressionado */
+}
+
+/* Estilo quando não há avaliações para exibir */
+.avaliacao-item.empty {
+    text-align: center;  /* Alinha o texto no centro */
+    color: #999;  /* Cor suave */
+    font-size: 16px;
+}
