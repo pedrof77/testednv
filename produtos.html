@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confeitaria Delícia - Produtos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container-header">
+            <h1>Confeitaria Delícia</h1>
+            <nav aria-label="Menu de navegação">
+                <ul class="menu">
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="produtos.html">Produtos</a></li>
+                    <li><a href="contato.html">Contato</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="produtos">
+            <div class="container-section">
+                <h2>Nossos Produtos</h2>
+                <div class="galeria-produtos">
+                    <!-- Produto 1 -->
+                    <div class="produto" aria-labelledby="produto1">
+                        <img src="images.jpeg" alt="Bolo de Chocolate com recheio de brigadeiro">
+                        <h3 id="produto1">Bolo de Chocolate</h3>
+                        <p>Delicioso bolo de chocolate com recheio de brigadeiro.</p>
+                        <p>Preço: R$25,00</p>
+                        <div class="avaliacao" data-id="1" aria-labelledby="avaliacao1">
+                            <span class="estrela" data-value="1" aria-label="1 estrela">★</span>
+                            <span class="estrela" data-value="2" aria-label="2 estrelas">★</span>
+                            <span class="estrela" data-value="3" aria-label="3 estrelas">★</span>
+                            <span class="estrela" data-value="4" aria-label="4 estrelas">★</span>
+                            <span class="estrela" data-value="5" aria-label="5 estrelas">★</span>
+                        </div>
+                        <input type="number" min="1" value="1" class="quantidade" aria-label="Quantidade do Bolo de Chocolate" />
+                        <button class="comprar" data-id="1" aria-label="Comprar Bolo de Chocolate">Comprar</button>
+                    </div>
+
+                    <!-- Produto 2 -->
+                    <div class="produto" aria-labelledby="produto2">
+                        <img src="images.jpeg" alt="Bolo de Pipoca">
+                        <h3 id="produto2">Bolo de Pipoca</h3>
+                        <p>Delicioso bolo com cobertura de pipoca caramelada.</p>
+                        <p>Preço: R$30,00</p>
+                        <div class="avaliacao" data-id="2" aria-labelledby="avaliacao2">
+                            <span class="estrela" data-value="1" aria-label="1 estrela">★</span>
+                            <span class="estrela" data-value="2" aria-label="2 estrelas">★</span>
+                            <span class="estrela" data-value="3" aria-label="3 estrelas">★</span>
+                            <span class="estrela" data-value="4" aria-label="4 estrelas">★</span>
+                            <span class="estrela" data-value="5" aria-label="5 estrelas">★</span>
+                        </div>
+                        <input type="number" min="1" value="1" class="quantidade" aria-label="Quantidade do Bolo de Pipoca" />
+                        <button class="comprar" data-id="2" aria-label="Comprar Bolo de Pipoca">Comprar</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Gerenciamento de Avaliações -->
+        <section id="avaliacoes">
+            <div class="container-section">
+                <h2>Gerenciar Avaliações</h2>
+                <button id="listar-avaliacoes">Listar Avaliações</button>
+                <ul id="lista-avaliacoes"></ul>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container-footer">
+            <p>&copy; 2024 Confeitaria Delícia. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <!-- Modal de Feedback -->
+<div id="modal-feedback" class="modal">
+    <div class="modal-content">
+        <span id="modal-close" class="modal-close">&times;</span>
+        <p id="modal-message"></p>
+    </div>
+</div>
+
+</body>
+</html>
