@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -62,14 +62,16 @@
             </div>
         </section>
 
-        <!-- Seção de Gerenciamento de Avaliações -->
         <section id="avaliacoes">
             <div class="container-section">
                 <h2>Gerenciar Avaliações</h2>
-                <button id="listar-avaliacoes">Listar Avaliações</button>
-                <ul id="lista-avaliacoes"></ul>
+                <button id="listar-avaliacoes" aria-label="Listar Avaliações">Listar Avaliações</button>
+                <!-- Lista onde as avaliações serão exibidas -->
+                <ul id="avaliacoes-container"></ul>
+                <div id="avaliacoes-container" class="hidden"></div>
             </div>
         </section>
+        
     </main>
 
     <footer>
@@ -79,13 +81,12 @@
     </footer>
 
     <script src="script.js"></script>
-    <!-- Modal de Feedback -->
-<div id="modal-feedback" class="modal">
-    <div class="modal-content">
-        <span id="modal-close" class="modal-close">&times;</span>
-        <p id="modal-message"></p>
-    </div>
-</div>
 
+    <div id="modal-feedback" class="modal">
+        <div class="modal-content">
+            <span id="modal-close" class="modal-close">&times;</span>
+            <p id="modal-message"></p>
+        </div>
+    </div>
 </body>
 </html>

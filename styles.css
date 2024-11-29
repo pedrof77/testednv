@@ -506,4 +506,91 @@ footer a:hover {
     margin: 20px 0;
     color: #333;
 }
+/* Contêiner principal das avaliações */
+#avaliacoes-container {
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
 
+/* Cada item de avaliação */
+.avaliacao-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Informações da avaliação */
+.avaliacao-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Texto principal */
+.avaliacao-info p {
+    margin: 0;
+    font-size: 16px;
+    color: #555;
+}
+
+.avaliacao-info p strong {
+    color: #333;
+}
+
+/* Botão de excluir */
+.avaliacao-item button {
+    background-color: #f44336; /* Vermelho */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Botão de excluir - Hover */
+.avaliacao-item button:hover {
+    background-color: #d32f2f;
+    transform: scale(1.05);
+}
+
+/* Título da seção de avaliações */
+#avaliacoes h2 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Botão listar avaliações */
+#listar-avaliacoes {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4caf50; /* Verde */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Botão listar avaliações - Hover */
+#listar-avaliacoes:hover {
+    background-color: #388e3c;
+    transform: scale(1.05);
+}
