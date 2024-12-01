@@ -1,12 +1,13 @@
+
 document.addEventListener("DOMContentLoaded", () => {
     const apiBaseUrl = "https://api-gilt-pi.vercel.app";
 
     const feedbackContainer = document.getElementById("feedback");
     const avaliacoesContainer = document.getElementById("avaliacoes-container");
+    const listarAvaliacoesButton = document.getElementById("listar-avaliacoes");
     const produtos = document.querySelectorAll(".produto");
 
-    
-    
+
     let lastScrollTop = 0; 
 
     window.addEventListener('scroll', function () {
@@ -30,14 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.pageYOffset > 0) {
         document.querySelector('header').classList.add('hidden');
     }
-});
-document.addEventListener("DOMContentLoaded", () => {
-    const apiBaseUrl = "https://api-gilt-pi.vercel.app";
-
-    const feedbackContainer = document.getElementById("feedback");
-    const avaliacoesContainer = document.getElementById("avaliacoes-container");
-    const listarAvaliacoesButton = document.getElementById("listar-avaliacoes");
-    const produtos = document.querySelectorAll(".produto");
 
     
     const mostrarFeedback = (mensagem, tipo) => {
