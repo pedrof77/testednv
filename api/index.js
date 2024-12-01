@@ -6,19 +6,17 @@ const app = express();
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 
-const uri = 'mongodb+srv://augustopietro482:88323571@cluster0.991nw.mongodb.net/'; // URI direta, conforme solicitado
+const uri = 'mongodb+srv://augustopietro482:88323571@cluster0.991nw.mongodb.net/'; 
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 let dbInstance;
 
-/**
- * Retorna a instância do banco de dados.
- */
+
 async function getDatabase() {
     if (!dbInstance) {
         try {
             console.log("Conectando ao MongoDB...");
             await client.connect();
-            dbInstance = client.db('loja'); // Nome do banco de dados
+            dbInstance = client.db('loja'); 
             console.log("Conexão com o MongoDB estabelecida.");
         } catch (error) {
             console.error("Erro ao conectar ao MongoDB:", error);
@@ -28,14 +26,73 @@ async function getDatabase() {
     return dbInstance;
 }
 
-// Rotas
+
 app.get('/', (req, res) => res.status(200).json({ message: 'API rodando com sucesso!' }));
 
-// Rotas
+
+app.post('/api/compras', async (req, res) => {
+    const { produtoId, quantidade } = req.body;
+
+    
+    if (!produtoId || !quantidade || quantidade <= 0) {
+        return res.status(400).json({ error: 'Dados inválidos. Produto e quantidade devem ser fornecidos, e a quantidade deve ser maior que 0.' });
+    }
+
+    try {
+        const db = await getDatabase();
+
+        
+        const produto = await db.collection('produtos').findOne({ _id: produtoId });
+
+        if (!produto) {
+            return res.status(404).json({ error: 'Produto não encontrado.' });
+        }
+
+        
+        const novaCompra = {
+            produtoId,
+            produtoNome: produto.nome,
+            quantidade,
+            date: new Date(),
+        };
+
+        
+        const resultado = await db.collection('compras').insertOne(novaCompra);
+
+        
+        res.status(201).json({
+            message: 'Compra realizada com sucesso!',
+            id: resultado.insertedId,
+            produtoNome: novaCompra.produtoNome,
+            quantidade: novaCompra.quantidade,
+        });
+    } catch (error) {
+        console.error("Erro ao registrar compra:", error);
+        res.status(500).json({ error: 'Erro interno ao registrar a compra.' });
+    }
+});
+
+
+app.get('/api/compras', async (req, res) => {
+    try {
+        const db = await getDatabase();
+
+        
+        const compras = await db.collection('compras').find().toArray();
+
+        res.status(200).json(compras);
+    } catch (error) {
+        console.error("Erro ao listar compras:", error);
+        res.status(500).json({ error: 'Erro interno ao listar compras.' });
+    }
+});
+
+
+
 app.post('/api/avaliacoes', async (req, res) => {
     const { produtoId, rating } = req.body;
 
-    // Validação dos dados
+    
     if (!produtoId || !rating || rating < 1 || rating > 5) {
         return res.status(400).json({ error: 'Avaliação inválida. O rating deve estar entre 1 e 5.' });
     }
@@ -43,25 +100,25 @@ app.post('/api/avaliacoes', async (req, res) => {
     try {
         const db = await getDatabase();
 
-        // Verifica se o produto existe com o produtoId
+        
         const produto = await db.collection('produtos').findOne({ _id: produtoId });
 
         if (!produto) {
             return res.status(404).json({ error: 'Produto não encontrado.' });
         }
 
-        // Criando a avaliação (sem passar o _id para forçar o MongoDB a gerar o seu próprio ObjectId)
+        
         const novaAvaliacao = {
-            produtoId,   // produtoId é o número, como 1
-            rating,      // A nota da avaliação
-            produtoNome: produto.nome,  // Nome do produto
-            date: new Date(),  // Data da avaliação
+            produtoId,   
+            rating,      
+            produtoNome: produto.nome,  
+            date: new Date(),  
         };
 
-        // Inserindo a avaliação no banco de dados
+       
         const resultado = await db.collection('avaliacoes').insertOne(novaAvaliacao);
 
-        // Retornando o resultado com o id gerado para a avaliação
+        
         res.status(201).json({ message: 'Avaliação criada com sucesso!', id: resultado.insertedId, produtoNome: novaAvaliacao.produtoNome });
 
     } catch (error) {
@@ -74,25 +131,22 @@ app.post('/api/avaliacoes', async (req, res) => {
 //
 
 
-/**
- * Listagem de todas as avaliações.
- */
 app.get('/api/avaliacoes', async (req, res) => {
     try {
         const db = await getDatabase();
 
-        // Buscando todas as avaliações
+
         const avaliacoes = await db.collection('avaliacoes').find().toArray();
 
-        // Para cada avaliação, vamos buscar o nome do produto correspondente
+        
         for (let i = 0; i < avaliacoes.length; i++) {
             const produto = await db.collection('produtos').findOne({ _id: avaliacoes[i].produtoId });
             if (produto) {
-                avaliacoes[i].produtoNome = produto.nome;  // Adiciona o nome do produto
+                avaliacoes[i].produtoNome = produto.nome;  
             }
         }
 
-        res.status(200).json(avaliacoes);  // Retorna todas as avaliações com o nome do produto
+        res.status(200).json(avaliacoes);  
     } catch (error) {
         console.error("Erro ao listar avaliações:", error);
         res.status(500).json({ error: 'Erro interno ao listar avaliações.' });
@@ -100,9 +154,7 @@ app.get('/api/avaliacoes', async (req, res) => {
 });
 
 
-/**
- * Atualização de uma avaliação existente.
- */
+
 app.put('/api/avaliacoes/:id', async (req, res) => {
     const { id } = req.params;
     const { rating } = req.body;
@@ -141,9 +193,7 @@ app.get('/api/produtos', async (req, res) => {
 });
 
 
-/**
- * Exclusão de uma avaliação.
- */
+
 app.delete('/api/avaliacoes/:id', async (req, res) => {
     const { id } = req.params;
 
@@ -162,7 +212,7 @@ app.delete('/api/avaliacoes/:id', async (req, res) => {
     }
 });
 
-// Inicialização do servidor
+
 const port = process.env.PORT || 3000;
 if (process.env.NODE_ENV !== 'production') {
     app.listen(port, () => console.log(`Servidor rodando em http://localhost:${port}`));

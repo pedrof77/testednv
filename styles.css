@@ -8,12 +8,12 @@ body {
     overflow-x: hidden;
 }
 
-/* Ajuste do cabeçalho */
+
 header {
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 10; /* Ajustado para um valor mais baixo */
+    z-index: 10; 
     background: linear-gradient(90deg, #000000, #1a1a1a);
     padding: 20px 0;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
@@ -44,9 +44,9 @@ header h1 {
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
-/* Aumenta a área do conteúdo para evitar sobreposição */
+
 main {
-    padding-top: 80px; /* A mesma altura do cabeçalho para garantir que o conteúdo não seja coberto */
+    padding-top: 80px; 
 }
 
 nav ul {
@@ -176,7 +176,7 @@ section h2 {
     box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Footer estilizado */
+
 footer {
     background: linear-gradient(90deg, #000000, #1a1a1a);
     color: #fff;
@@ -222,12 +222,12 @@ footer a:hover {
     transform: scale(1.2);
 }
 
-/* Removido a cor de hover extra para a estrela já selecionada */
+
 .estrela.selecionada {
     color: #e08294;
 }
 
-/* Feedback visual ao selecionar (ajuste de pseudo-classe) */
+
 .avaliacao .estrela-selecionada:after {
     content: ' ★';
     font-size: 1.2em;
@@ -236,7 +236,7 @@ footer a:hover {
     transition: all 0.3s ease;
 }
 
-/* Estilo para input de quantidade */
+
 .quantidade {
     width: 80px;
     padding: 10px;
@@ -254,7 +254,7 @@ footer a:hover {
     box-shadow: 0px 0px 8px rgba(255, 193, 7, 0.6);
 }
 
-/* Botão para aumentar/diminuir quantidade */
+
 .quantidade-container {
     display: flex;
     align-items: center;
@@ -272,7 +272,7 @@ footer a:hover {
     border-radius: 50%;
     font-size: 1.2em;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    width: 40px; /* Definido tamanho consistente */
+    width: 40px; 
     height: 40px;
 }
 
@@ -282,7 +282,7 @@ footer a:hover {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Estilo dos botões de redes sociais */
+
 .redes-sociais {
     display: flex;
     justify-content: center;
@@ -308,7 +308,7 @@ footer a:hover {
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
 }
 
-/* Estilo para cada rede social */
+
 .instagram {
     background-color: #E4405F;
 }
@@ -341,7 +341,7 @@ footer a:hover {
     background-color: #1DA851;
 }
 
-/* Responsividade */
+
 @media (max-width: 768px) {
     .redes-sociais {
         flex-direction: column;
@@ -364,11 +364,11 @@ footer a:hover {
     text-align: left;
     font-size: 1.2em;
     color: #5a3e36;
-    /* Removido a transição de transform que não é utilizada */
+    
 }
 
 .texto-inicial h2 {
-    font-size: 2.5rem; /* Usando rem para responsividade */
+    font-size: 2.5rem; 
     margin-bottom: 20px;
     color: #5a3e36;
     font-weight: bold;
@@ -389,63 +389,37 @@ footer a:hover {
 
 .texto-inicial ul {
     list-style-type: none;
-    padding-left: 10px; /* Reduzido o espaçamento da lista */
+    padding-left: 10px; 
 }
 
 .texto-inicial ul li {
     font-size: 1.1em;
-    margin-bottom: 8px; /* Menor espaçamento entre os itens */
+    margin-bottom: 8px; 
 }
 
 .texto-inicial ul li strong {
     color: #f5a9bc;
 }
 
-#listar-avaliacoes {
-    background: linear-gradient(90deg, #000000, #000000);
-    border: none;
-    color: #fff;
-    padding: 10px 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 1.2em;
-    text-transform: uppercase;
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-    margin-top: 18px;
-    display: inline-block;
-    width: auto; /* Ajustado para flexibilidade */
-}
-
-#listar-avaliacoes:hover {
-    background: linear-gradient(90deg, #444444, #333333); /* Ajuste de cor no hover */
-    transform: scale(1.05);
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-#listar-avaliacoes:focus {
-    outline: none;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
-}
 
 .modal {
-    display: none; /* Escondido por padrão */
+    display: none; 
     position: fixed;
-    top: 50%; /* Centraliza verticalmente */
-    left: 50%; /* Centraliza horizontalmente */
+    top: 50%; 
+    left: 50%; 
     transform: translate(-50%, -50%);
     width: 80%;
     max-width: 500px;
-    background-color: rgba(255, 255, 255, 0.9); /* Fundo branco com opacidade */
+    background-color: rgba(255, 255, 255, 0.9); 
     z-index: 1001;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     overflow: hidden;
-    transition: opacity 0.3s ease, visibility 0s 0.3s; /* Animação suave */
+    transition: opacity 0.3s ease, visibility 0s 0.3s; 
 }
 
-/* Estilo do fundo do modal */
+
 .modal::before {
     content: "";
     position: absolute;
@@ -453,11 +427,11 @@ footer a:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.3); /* Fundo semitransparente */
+    background-color: rgba(0, 0, 0, 0.3); 
     z-index: -1;
 }
 
-/* Estilo do conteúdo do modal */
+
 .modal-content {
     position: relative;
     padding: 20px;
@@ -466,7 +440,7 @@ footer a:hover {
     text-align: center;
 }
 
-/* Fechar o modal */
+
 .modal-close {
     position: absolute;
     top: 10px;
@@ -476,13 +450,13 @@ footer a:hover {
     color: #333;
 }
 
-/* Estilo da mensagem no modal */
+
 #modal-message {
     font-size: 1.2em;
     margin: 20px 0;
     color: #333;
 }
-/* Contêiner principal das avaliações */
+
 #avaliacoes-container {
     margin: 20px 0;
     padding: 10px;
@@ -494,7 +468,7 @@ footer a:hover {
     margin-right: auto;
 }
 
-/* Cada item de avaliação */
+
 .avaliacao-item {
     display: flex;
     justify-content: space-between;
@@ -507,14 +481,14 @@ footer a:hover {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Informações da avaliação */
+
 .avaliacao-info {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
-/* Texto principal */
+
 .avaliacao-info p {
     margin: 0;
     font-size: 16px;
@@ -525,25 +499,8 @@ footer a:hover {
     color: #333;
 }
 
-/* Botão de excluir */
-.avaliacao-item button {
-    background-color: #f44336; /* Vermelho */
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s, transform 0.2s;
-}
 
-/* Botão de excluir - Hover */
-.avaliacao-item button:hover {
-    background-color: #d32f2f;
-    transform: scale(1.05);
-}
 
-/* Título da seção de avaliações */
 #avaliacoes h2 {
     font-size: 24px;
     text-align: center;
@@ -551,13 +508,14 @@ footer a:hover {
     color: #333;
 }
 
-/* Botão listar avaliações */
+
+
 #listar-avaliacoes {
     display: block;
     margin: 20px auto;
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #4caf50; /* Verde */
+    background-color: #4caf50; 
     color: white;
     border: none;
     border-radius: 5px;
@@ -565,7 +523,7 @@ footer a:hover {
     transition: background-color 0.3s, transform 0.2s;
 }
 
-/* Botão listar avaliações - Hover */
+
 #listar-avaliacoes:hover {
     background-color: #388e3c;
     transform: scale(1.05);
@@ -577,67 +535,59 @@ footer a:hover {
 
 */ 
 
-/* Estilo geral para as avaliações */
+
 .avaliacao-item {
-    background-color: #f9f9f9;  /* Fundo suave */
-    border: 1px solid #ddd;  /* Borda sutil */
-    border-radius: 8px;  /* Bordas arredondadas */
-    margin: 10px 0;  /* Espaço entre as avaliações */
+    background-color: #f9f9f9;  
+    border: 1px solid #ddd;  
+    border-radius: 8px;  
+    margin: 10px 0;  
     padding: 15px;
-    font-family: Arial, sans-serif;  /* Fonte padrão */
+    font-family: Arial, sans-serif;  
     display: flex;
-    flex-direction: column;  /* Organiza os itens em coluna */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  /* Sombra suave */
+    flex-direction: column;  
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  
 }
 
-/* Estilo para o título de cada avaliação (nome do produto) */
+
 .avaliacao-item p {
-    font-size: 16px;  /* Tamanho da fonte */
-    color: #333;  /* Cor do texto */
-    margin: 0 0 10px 0;  /* Espaço abaixo do parágrafo */
+    font-size: 16px;  
+    color: #333;  
+    margin: 0 0 10px 0;  
 }
 
-/* Estilo para o nome do produto */
-.avaliacao-item p span.nome-produto {
-    font-weight: bold;  /* Deixa o nome do produto em negrito */
-    color: #2e8b57;  /* Cor verde para destaque */
-}
 
-/* Estilo para o ID do produto */
-.avaliacao-item p span.produto-id {
-    font-style: italic;  /* Deixa o ID em itálico */
-    color: #888;  /* Cor mais suave para o ID */
-    margin-left: 10px;  /* Espaço entre o nome e o ID */
-}
 
-/* Estilo para a nota */
-.avaliacao-item p span.rating {
-    font-size: 18px;  /* Tamanho maior para a nota */
-    color: #ff9900;  /* Cor laranja para a nota */
-    font-weight: bold;  /* Deixa a nota em negrito */
-}
 
-/* Estilo dos botões de excluir e atualizar */
 .avaliacao-item button {
-    background-color: #4CAF50;  /* Cor de fundo verde */
-    color: white;  /* Cor do texto branco */
-    border: none;  /* Sem borda */
-    border-radius: 5px;  /* Bordas arredondadas */
+    background-color: #4CAF50;  
+    color: white;  
+    border: none;  
+    border-radius: 5px;  
     padding: 8px 15px;
     margin: 5px 0;
     cursor: pointer;
     font-size: 14px;
-    transition: background-color 0.3s;  /* Transição suave para mudança de cor */
+    transition: background-color 0.3s;  
 }
 
-/* Efeito de hover nos botões */
+
 .avaliacao-item button:hover {
-    background-color: #45a049;  /* Cor mais escura quando o botão é pressionado */
+    background-color: #45a049;  
 }
 
-/* Estilo quando não há avaliações para exibir */
+
 .avaliacao-item.empty {
-    text-align: center;  /* Alinha o texto no centro */
-    color: #999;  /* Cor suave */
+    text-align: center;  
+    color: #999;  
     font-size: 16px;
 }
+
+
+.avaliacao-item .nome-produto {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+

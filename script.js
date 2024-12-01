@@ -6,27 +6,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const produtos = document.querySelectorAll(".produto");
 
     
-    // Função que lida com a visibilidade do cabeçalho
-    let lastScrollTop = 0; // Para armazenar a posição da última rolagem
+    
+    let lastScrollTop = 0; 
 
     window.addEventListener('scroll', function () {
         let header = document.querySelector('header');
         let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
 
-        // Se o usuário estiver rolando para baixo, o cabeçalho desaparece
+        
         if (currentScroll > lastScrollTop) {
             header.classList.add('hidden');
             header.classList.remove('visible');
-        } else { // Caso contrário, o cabeçalho aparece
+        } else { 
             header.classList.remove('hidden');
             header.classList.add('visible');
         }
 
-        // Atualiza a posição da rolagem para a próxima comparação
+       
         lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
     });
 
-    // Ajusta o cabeçalho ao carregar a página
+
     if (window.pageYOffset > 0) {
         document.querySelector('header').classList.add('hidden');
     }
@@ -39,32 +39,32 @@ document.addEventListener("DOMContentLoaded", () => {
     const listarAvaliacoesButton = document.getElementById("listar-avaliacoes");
     const produtos = document.querySelectorAll(".produto");
 
-    // Função para mostrar o feedback usando o modal
+    
     const mostrarFeedback = (mensagem, tipo) => {
         const modal = document.getElementById("modal-feedback");
         const modalMessage = document.getElementById("modal-message");
         const modalAtualizar = document.getElementById("modal-atualizar");
 
-        // Define a mensagem no modal
+        
         modalMessage.textContent = mensagem;
 
-        // Definir a cor de fundo do modal com base no tipo de mensagem (sucesso ou erro)
+        
         if (tipo === "sucesso") {
-            modal.style.backgroundColor = "#4CAF50"; // Verde para sucesso
+            modal.style.backgroundColor = "#4CAF50"; 
         } else if (tipo === "erro") {
-            modal.style.backgroundColor = "#f44336"; // Vermelho para erro
+            modal.style.backgroundColor = "#f44336"; 
         }
 
-        // Exibir o modal
+        
         modal.style.display = "flex";
 
-        // Fechar o modal quando clicar no "x"
+        
         const closeModal = document.getElementById("modal-close");
         closeModal.onclick = () => {
             modal.style.display = "none";
         };
 
-        // Fechar o modal ao clicar fora do conteúdo
+        
         window.onclick = (event) => {
             if (event.target === modal) {
                 modal.style.display = "none";
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const enviarAvaliacao = async (produtoId, rating) => {  
         try {
-            // Envia a requisição para criar a avaliação
+            
             const resposta = await fetch(`${apiBaseUrl}/api/avaliacoes`, {
                 method: "POST",
                 headers: {
@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: JSON.stringify({ produtoId: Number(produtoId), rating: Number(rating) }),
             });
     
-            // Verifica se a resposta foi ok
+            
             if (!resposta.ok) {
                 const contentType = resposta.headers.get("content-type");
                 if (contentType && contentType.includes("application/json")) {
@@ -94,11 +94,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
     
-            // A resposta agora inclui o nome do produto
+        
             const respostaJson = await resposta.json();
-            const produtoNome = respostaJson.produtoNome || 'Produto'; // Define o nome do produto aqui
+            const produtoNome = respostaJson.produtoNome || 'Produto'; 
     
-            // Mostra a mensagem de feedback com o nome do produto
+            
             mostrarFeedback(`Avaliação enviada com sucesso para o produto: ${produtoNome}!`, "sucesso");
         } catch (erro) {
             console.error("Erro ao enviar avaliação:", erro);
@@ -106,21 +106,21 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
     
-    // Processo de envio de avaliação ao clicar nas estrelas
+    
     produtos.forEach((produto) => {
         const estrelas = produto.querySelectorAll(".estrela");
-        const produtoId = produto.querySelector(".avaliacao").getAttribute("data-id"); // Pega o ID fixo do produto
+        const produtoId = produto.querySelector(".avaliacao").getAttribute("data-id"); 
     
         estrelas.forEach((estrela) => {
             estrela.addEventListener("click", async () => {
                 const rating = estrela.getAttribute("data-value");
     
-                // Atualiza as estrelas visualmente
+                
                 estrelas.forEach((s, index) => {
                     s.classList.toggle("selecionada", index < rating);
                 });
     
-                // Envia a avaliação para o backend, passando o produtoId e a rating
+                
                 await enviarAvaliacao(produtoId, rating);
             });
         });
@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Função de listagem de avaliações
+    
     const listarAvaliacoes = async () => {
         try {
             const resposta = await fetch(`${apiBaseUrl}/api/avaliacoes`, { method: "GET" });
@@ -176,16 +176,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
+            
             avaliacoes.forEach((avaliacao) => {
                 const avaliacaoElement = document.createElement("div");
                 avaliacaoElement.classList.add("avaliacao-item");
                 avaliacaoElement.innerHTML = `
-                    <p>Produto: ${avaliacao.produtoNome} (ID: ${avaliacao.produtoId}), Nota: ${avaliacao.rating}</p>
+                     <p class="nome-produto"> ${avaliacao.produtoNome}</p>
+                <p>ID do Produto: ${avaliacao.produtoId}</p>
+                <p>Nota: ${avaliacao.rating}</p>
                     <button onclick="excluirAvaliacao('${avaliacao._id}')">Excluir</button>
                     <button onclick="atualizarAvaliacao('${avaliacao._id}', ${avaliacao.rating})">Atualizar</button>
                 `;
                 avaliacoesContainer.appendChild(avaliacaoElement);
             });
+
 
         } catch (erro) {
             console.error("Erro ao listar avaliações:", erro);
@@ -215,33 +219,32 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Função para atualizar a avaliação
-     // Função para atualizar a avaliação
+    
      window.atualizarAvaliacao = (id, ratingAtual) => {
         const modalAtualizar = document.getElementById("modal-atualizar");
         const novoRatingInput = document.getElementById("novo-rating");
         const confirmarAtualizarBtn = document.getElementById("confirmar-atualizar");
 
-        // Preenche o campo com a avaliação atual
+        
         novoRatingInput.value = ratingAtual;
 
-        // Exibe o modal de atualização
+        
         modalAtualizar.style.display = "flex";
 
-        // Fechar o modal de atualização ao clicar no "x"
+        
         const closeModalAtualizar = document.getElementById("modal-close-atualizar");
         closeModalAtualizar.onclick = () => {
             modalAtualizar.style.display = "none";
         };
 
-        // Fechar o modal de atualização ao clicar fora do conteúdo
+        
         window.onclick = (event) => {
             if (event.target === modalAtualizar) {
                 modalAtualizar.style.display = "none";
             }
         };
 
-        // Ação de confirmar atualização
+        
         confirmarAtualizarBtn.onclick = async () => {
             const novoRating = novoRatingInput.value;
             if (novoRating >= 1 && novoRating <= 5) {
@@ -264,11 +267,11 @@ document.addEventListener("DOMContentLoaded", () => {
                         }
                     }
 
-                    // Exibir mensagem de sucesso
+                    
                     mostrarFeedback("Avaliação atualizada com sucesso!", "sucesso");
-                    listarAvaliacoes(); // Recarrega as avaliações após atualização
+                    listarAvaliacoes(); 
 
-                    // Fechar o modal de atualização
+                    
                     modalAtualizar.style.display = "none";
                 } catch (erro) {
                     console.error("Erro ao atualizar avaliação:", erro);
@@ -283,7 +286,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-    // Processamento das interações com o produto
+    
     produtos.forEach((produto) => {
         const produtoId = produto.querySelector(".avaliacao").getAttribute("data-id");
         const estrelas = produto.querySelectorAll(".estrela");
@@ -294,12 +297,12 @@ document.addEventListener("DOMContentLoaded", () => {
             estrela.addEventListener("click", async () => {
                 const rating = estrela.getAttribute("data-value");
 
-                // Atualiza as estrelas visualmente
+                
                 estrelas.forEach((s, index) => {
                     s.classList.toggle("selecionada", index < rating);
                 });
 
-                // Envia a avaliação para o backend
+                
                 await enviarAvaliacao(produtoId, rating);
             });
         });
