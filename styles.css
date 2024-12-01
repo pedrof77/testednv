@@ -156,6 +156,7 @@ section h2 {
     color: #555;
     margin: 10px 0;
     font-size: 1.1em;
+    font-family: 'Merriweather', serif;
 }
 
 .comprar {
@@ -400,7 +401,12 @@ footer a:hover {
 .texto-inicial ul li strong {
     color: #f5a9bc;
 }
-
+.texto-inicial p {
+    font-family: 'Merriweather', serif;
+}
+.texto-inicial p strong {
+    font-size: 1.2em;
+}
 
 .modal {
     display: none; 
